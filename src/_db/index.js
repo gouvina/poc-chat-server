@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = process.env.DATABASE_URL;
-db.User = require("../user/user.model")(mongoose);
+db.Conversation = require("../conversation/conversation.model")(mongoose);
 // Add more models here...
 
 module.exports = db;

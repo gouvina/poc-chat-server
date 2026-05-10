@@ -9,7 +9,7 @@ const logger = require('morgan');
 const cors = require('cors');
 // Internal dependencies
 const routes = require('./_constants/routes');
-const usersRouter = require('./user/user.router');
+const conversationsRouter = require('./conversation/conversation.router');
 const { CORS_ORIGIN_WHITELIST } = require('./_config');
 
 // CORS options
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 
 // Routes
-app.use(routes.USERS, usersRouter);
+app.use(routes.CONVERSATIONS, conversationsRouter);
 
 // Error handling
 app.use((err, req, res, next) => {

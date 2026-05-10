@@ -7,37 +7,37 @@
 	},
 	"item": [
 		{
-			"name": "Users",
+			"name": "Conversations",
 			"item": [
 				{
-					"name": "Users",
+					"name": "Conversations",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users",
+							"raw": "{{BASE_URL}}/conversations",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users"
+								"conversations"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Conversation",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
@@ -51,13 +51,13 @@
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Conversation",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"germanouvina+1@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"raw": "{\r\n    \"id\": \"conv-1\",\r\n    \"title\": \"First chat\",\r\n    \"messages\": [\"Hello\", \"How are you?\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,25 +65,25 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/users",
+							"raw": "{{BASE_URL}}/conversations",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users"
+								"conversations"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Conversation",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"germanouvina+2@gmail.com\",\r\n    \"password\": \"12345679\"\r\n}",
+							"raw": "{\r\n    \"id\": \"conv-1\",\r\n    \"title\": \"Updated chat\",\r\n    \"messages\": [\"Hi again\", \"Updated message\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,12 +91,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
@@ -110,17 +110,17 @@
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Conversation",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
