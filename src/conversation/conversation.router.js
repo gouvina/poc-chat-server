@@ -6,6 +6,7 @@ const {
   getConversations,
   getConversation,
   createConversation,
+  sendMessage,
   updateConversation,
   deleteConversation,
 } = require("./conversation.controller");
@@ -20,6 +21,9 @@ router.get("/", getConversations);
 
 // POST /conversations - Creates a new conversation in the DB
 router.post("/", createConversation);
+
+// POST /conversations/:id/messages - User message → assistant reply (mock)
+router.post("/:id/messages", sendMessage);
 
 // GET /conversations/:id - Gets specific conversation from the DB by id
 router.get("/:id", getConversation);

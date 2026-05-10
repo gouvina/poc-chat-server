@@ -77,6 +77,40 @@
 					"response": []
 				},
 				{
+					"name": "Send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"Hello from frontend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:id/messages",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "664a1a0a8e568049841fff0d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Conversation",
 					"request": {
 						"method": "PUT",

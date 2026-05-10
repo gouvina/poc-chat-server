@@ -30,6 +30,32 @@ exports.createConversation = async (req, res, next) => {
   }
 };
 
+// Append user message, get assistant reply (mock external API), persist both
+exports.sendMessage = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) return next(e400);
+
+    const text =
+      typeof req.body?.message === "string"
+        ? req.body.message
+        : typeof req.body?.content === "string"
+          ? req.body.content
+          : undefined;
+
+    if (text === undefined || !text.trim()) return next(e400);
+
+    const result = await conversationService.sendMessage(id, text.trim());
+
+    if (!result) return next(e404);
+
+    res.json({ reply: result.reply, conversation: result.conversation });
+  } catch (error) {
+    next({ ...e500, message: error.message || error });
+  }
+};
+
 // Get specific conversation based on id
 exports.getConversation = async (req, res, next) => {
   try {

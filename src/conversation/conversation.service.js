@@ -1,9 +1,30 @@
 // DEPENDENCIES
 // Internal dependencies
 const db = require("../_db");
+const { getAssistantReply } = require("./conversation.reply.service");
+
 const Conversation = db.Conversation;
 
 // MAIN METHODS
+
+// Receive a user message, persist both sides, return assistant reply
+exports.sendMessage = async (_id, text) => {
+  const conversation = await Conversation.findById(_id);
+  if (!conversation) return null;
+
+  conversation.messages.push(text);
+
+  const reply = await getAssistantReply({
+    conversationId: conversation._id.toString(),
+    messages: conversation.messages,
+    latestUserMessage: text,
+  });
+
+  conversation.messages.push(reply);
+  await conversation.save();
+
+  return { reply, conversation };
+};
 
 // Get list of conversations
 exports.getConversations = async () => {
