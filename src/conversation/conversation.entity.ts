@@ -2,31 +2,28 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity('conversations')
 export class Conversation {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn({ type: 'char', length: 36})
+  id: string = uuidv4()
 
-  /** Client-supplied identifier (POST/PUT body `id` in the legacy API). */
-  @Column({ unique: true, name: 'client_id' })
-  clientId: string;
-
-  @Column()
-  title: string;
+  @Column({type: 'varchar', length: 300})
+  title!: string;
 
   @Column({ type: 'jsonb' })
-  messages: string[];
+  messages!: string[];
 
   @Column({ name: '_archived', default: false })
-  _archived: boolean;
+  _archived!: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({ type: 'timestamp with time zone'	})
+  createdAt!: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone'})
+  updatedAt!: Date;
 }

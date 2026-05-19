@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
-import { SendMessageDto } from './dto/send-message.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 
 @Controller('conversations')
@@ -27,30 +25,6 @@ export class ConversationController {
   @Post()
   async createConversation(@Body() dto: CreateConversationDto) {
     return this.conversationService.createConversation(dto);
-  }
-
-  @Post(':id/messages')
-  async sendMessage(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() body: SendMessageDto,
-  ) {
-    const text =
-      typeof body.message === 'string'
-        ? body.message
-        : typeof body.content === 'string'
-          ? body.content
-          : undefined;
-
-    if (text === undefined || !text.trim()) {
-      throw new BadRequestException('message or content is required');
-    }
-
-    const result = await this.conversationService.sendMessage(id, text.trim());
-    if (!result) {
-      throw new NotFoundException();
-    }
-
-    return { reply: result.reply, conversation: result.conversation };
   }
 
   @Get(':id')
