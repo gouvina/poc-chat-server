@@ -1,8 +1,9 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, MaxLength} from 'class-validator';
 
 export class CreateConversationDto {
 
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsArray()

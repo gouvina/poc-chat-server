@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
+import { ConversationDto } from './dto/conversation.dto';
 
 @Injectable()
 export class ConversationService {
@@ -16,12 +17,21 @@ export class ConversationService {
     return this.conversationRepository.find({ order: { createdAt: 'ASC' } });
   }
 
-  async createConversation(dto: CreateConversationDto): Promise<Conversation> {
+  async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const row = this.conversationRepository.create({
       title: dto.title,
       messages: dto.messages ?? [],
     });
-    return this.conversationRepository.save(row);
+    const conversation = await this.conversationRepository.save(row);
+
+    const conversationDto: ConversationDto = {
+      id: conversation.id,
+      title: conversation.title,
+      messages: conversation.messages,
+      createdAt: conversation.createdAt,
+    };
+  
+    return conversationDto;
   }
 
   async getConversation(id: string): Promise<Conversation | null> {
