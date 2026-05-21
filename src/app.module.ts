@@ -7,21 +7,24 @@ import { ConversationModule } from './conversation/conversation.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const databaseUrl = config.get<string>('DATABASE_URL');
-        if (!databaseUrl) {
-          throw new Error('DATABASE_URL is required (PostgreSQL connection string).');
-        }
-        return {
-          type: 'postgres' as const,
-          url: databaseUrl,
-          autoLoadEntities: true,
-          synchronize: config.get<string>('DB_SYNCHRONIZE', 'true') === 'true',
-          logging: config.get<string>('DB_LOGGING', 'false') === 'true',
-        };
-      },
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+
+        host: config.get<string>('DATABASE_HOST'),
+        port: Number(config.get<string>('DATABASE_PORT')),
+        username: config.get<string>('DATABASE_USERNAME'),
+        password: config.get<string>('DATABASE_PASSWORD'),
+        database: config.get<string>('DATABASE_NAME'),
+
+        autoLoadEntities: true,
+
+        synchronize:
+          config.get<string>('DATABASE_SYNCHRONIZE') === 'true',
+
+        logging:
+          config.get<string>('DATABASE_LOGGING') === 'true',
+      }),
     }),
     ConversationModule,
   ],
