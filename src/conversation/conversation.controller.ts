@@ -17,14 +17,14 @@ import { UpdateConversationDto } from './dto/update-conversation.dto';
 export class ConversationController {
   constructor(private readonly conversationService: ConversationService) {}
 
-  @Get()
-  async getConversations() {
-    return this.conversationService.getConversations();
-  }
-
   @Post()
   async createConversation(@Body() dto: CreateConversationDto) {
     return this.conversationService.createConversation(dto);
+  }
+
+  @Get()
+  async getConversations() {
+    return this.conversationService.getConversations();
   }
 
   @Get(':id')

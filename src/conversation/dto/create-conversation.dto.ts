@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString, MaxLength} from 'class-validator';
+import { IsArray, IsNotEmpty, IsString} from 'class-validator';
 
 export class CreateConversationDto {
 
