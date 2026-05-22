@@ -14,10 +14,6 @@ export class ConversationService {
     private readonly conversationRepository: Repository<Conversation>,
   ) {}
 
-  async getConversations(): Promise<Conversation[]> {
-    return this.conversationRepository.find({ order: { createdAt: 'ASC' } });
-  }
-
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const row = this.conversationRepository.create({
       title: dto.title,
@@ -28,6 +24,10 @@ export class ConversationService {
     let conversationDto = plainToInstance(ConversationDto, conversation)
   
     return conversationDto;
+  }
+
+  async getConversations(): Promise<Conversation[]> {
+    return this.conversationRepository.find({ order: { createdAt: 'ASC' } });
   }
 
   async getConversation(id: string): Promise<Conversation | null> {
