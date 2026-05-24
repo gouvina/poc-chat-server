@@ -7,6 +7,9 @@ export class ConversationDto {
     id: string;
 
     @IsString()
+    userId: string
+
+    @IsString()
     @IsNotEmpty()
     title: string;
 

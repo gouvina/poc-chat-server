@@ -113,7 +113,7 @@
 				{
 					"name": "Conversation",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -242,7 +242,7 @@
 				{
 					"name": "User",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
