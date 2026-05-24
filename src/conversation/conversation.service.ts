@@ -24,9 +24,11 @@ export class ConversationService {
 
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const row = this.conversationRepository.create({
+      userId: dto.userId,
       title: dto.title,
       messages: dto.messages ?? [],
     });
+    
     const conversation = await this.conversationRepository.save(row);
 
     const conversationDto = plainToInstance(ConversationDto, conversation)
