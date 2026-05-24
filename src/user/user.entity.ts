@@ -1,20 +1,15 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { v4 as uuidv4 } from 'uuid';
+import { BaseEntity } from "src/baseEntity/baseEntity.entity";
+import { Conversation } from "src/conversation/conversation.entity";
+import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity('users')
-export class User {
-    @PrimaryColumn({type: 'char', length: 36})
-    id: string = uuidv4()
-
+export class User extends BaseEntity {
     @Column({type: 'varchar', length: 100})
     email!: string;
 
     @Column({type: 'varchar', length: 100})
     password!: string;
-    
-    @CreateDateColumn({ type: 'timestamp with time zone' })
-    createdAt!: Date;
-  
-    @UpdateDateColumn({ type: 'timestamp with time zone' })
-    updatedAt!: Date;
+
+    @OneToMany(() => Conversation, (conversation) => conversation.userId)
+    conversations: Conversation[]
 }

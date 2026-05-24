@@ -5,12 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
-  constructor(                                          //
-    @InjectRepository(User)                             // Explicar todo esto
-    private readonly userRepository: Repository<User>,  //
+  constructor(                                          
+    @InjectRepository(User)                             
+    private readonly userRepository: Repository<User>, 
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
@@ -20,11 +21,7 @@ export class UserService {
     })
     const user = await this.userRepository.save(row)
 
-    const userDto: UserDto = {
-      id: user.id,
-      email: user.email,
-      password: user.password,
-    }
+    const userDto = plainToInstance(UserDto, user)
 
     return userDto;
   }
@@ -40,7 +37,7 @@ export class UserService {
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
     const existing = await this.userRepository.findOne({ where: { id } })
 
-    if(!existing) return null
+    if (!existing) return null
 
     existing.email = updateUserDto.email
     existing.password = updateUserDto.password
