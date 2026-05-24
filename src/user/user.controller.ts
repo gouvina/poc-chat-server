@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, ParseUUIDPipe, NotFoundException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, ParseUUIDPipe, NotFoundException, Put, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,7 +18,7 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUser(@Param('id', ParseUUIDPipe) id: string) { //Por que el ParseUUIDPipe
+  async getUser(@Param('id', ParseUUIDPipe) id: string) {
     const user = await this.userService.findOne(id); 
     if (!user) {
       throw new NotFoundException()
@@ -26,9 +26,9 @@ export class UserController {
     return user
   }
 
-  @Put(':id') //Patch o Put?
+  @Patch(':id')
   async updateUser(
-    @Param('id', ParseUUIDPipe) id: string, //por que parseuuidpipe
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const user = await this.userService.updateUser(id, updateUserDto) 
@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id', ParseUUIDPipe) id: string) { //por que parseuuidpipe
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     const user = await this.userService.deleteUser(id); 
     if (!user) {
       throw new NotFoundException()
