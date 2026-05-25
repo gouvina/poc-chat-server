@@ -13,6 +13,4 @@ export class Message {
     @Column({ type: 'varchar'})
     sender!: string
 
-    @CreateDateColumn({ type: 'timestamp with time zone'})
-    sentAt!: Date
 }

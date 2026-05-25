@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
@@ -36,7 +37,7 @@ export class ConversationController {
     return conversation;
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateConversation(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateConversationDto,

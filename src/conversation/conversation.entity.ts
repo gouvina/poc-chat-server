@@ -1,16 +1,21 @@
+import { BaseEntity } from 'src/baseEntity/baseEntity.entity';
+import { User } from 'src/user/user.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 
 @Entity('conversations')
-export class Conversation {
-  @PrimaryColumn({ type: 'char', length: 36})
-  id: string = uuidv4()
+export class Conversation extends BaseEntity {
+
+  @Column({ type: 'char', length: 36})
+  userId!: string;
+
+  @ManyToOne(() => User, (user) => user.conversations, { onDelete: 'CASCADE'})
+  @JoinColumn({ name: 'userId'})
+  user: User
 
   @Column({type: 'varchar', length: 300})
   title!: string;
@@ -20,10 +25,4 @@ export class Conversation {
 
   @Column({ name: '_archived', default: false })
   _archived!: boolean;
-
-  @CreateDateColumn({ type: 'timestamp with time zone'	})
-  createdAt!: Date;
-
-  @UpdateDateColumn({ type: 'timestamp with time zone'})
-  updatedAt!: Date;
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { plainToInstance } from 'class-transformer'
 import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
@@ -15,17 +16,14 @@ export class ConversationService {
 
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const row = this.conversationRepository.create({
+      userId: dto.userId,
       title: dto.title,
       messages: dto.messages ?? [],
     });
+    
     const conversation = await this.conversationRepository.save(row);
 
-    const conversationDto: ConversationDto = {
-      id: conversation.id,
-      title: conversation.title,
-      messages: conversation.messages,
-      createdAt: conversation.createdAt,
-    };
+    let conversationDto = plainToInstance(ConversationDto, conversation)
   
     return conversationDto;
   }
