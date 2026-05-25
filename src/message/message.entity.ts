@@ -1,11 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
-import { v4 as uuidv4 } from 'uuid';
+import { BaseEntity } from "src/baseEntity/baseEntity.entity";
+import { Conversation } from "src/conversation/conversation.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 
 @Entity('messages')
-export class Message {
-    @PrimaryColumn({type: 'char', length: 36})
-    id: string = uuidv4()
+export class Message extends BaseEntity {
 
     @Column({type: 'varchar'})
     content!: string
@@ -13,4 +12,10 @@ export class Message {
     @Column({ type: 'varchar'})
     sender!: string
 
+    @Column({type: 'char', length: 36})
+    conversationId!: string;
+
+    @ManyToOne(() => Conversation, (conversation) => conversation.messages, {onDelete: 'CASCADE'})
+    @JoinColumn({name: 'conversationId'})
+    conversation: Conversation
 }
