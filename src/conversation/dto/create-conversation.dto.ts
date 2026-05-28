@@ -1,4 +1,6 @@
-import { IsArray, IsNotEmpty, IsString} from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, ValidateNested} from 'class-validator';
+import { CreateMessageDto } from 'src/message/dto/create-message.dto';
 
 export class CreateConversationDto {
   @IsString()
@@ -9,7 +11,7 @@ export class CreateConversationDto {
   @IsNotEmpty()
   title: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  messages: string[];
+  @ValidateNested()
+  @Type(() => CreateMessageDto)
+  firstMessage?: CreateMessageDto
 }

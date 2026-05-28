@@ -18,7 +18,7 @@ export class ConversationService {
     const row = this.conversationRepository.create({
       userId: dto.userId,
       title: dto.title,
-      messages: dto.messages ?? [],
+      messages: dto.firstMessage ? [{content: dto.firstMessage.content, sender: dto.firstMessage.sender}] : [],
     });
     
     const conversation = await this.conversationRepository.save(row);
