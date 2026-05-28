@@ -14,8 +14,12 @@ export class ConversationService {
     private readonly conversationRepository: Repository<Conversation>,
   ) {}
 
-  async getConversations(): Promise<Conversation[]> {
-    return this.conversationRepository.find({ order: { createdAt: 'ASC' } });
+  async getConversations(): Promise<ConversationDto[]> {
+    const conversations = await this.conversationRepository.find({ order: { createdAt: 'ASC' } });
+
+    const conversationsDto = conversations.map(conversation => plainToInstance(ConversationDto, conversation))
+  
+    return conversationsDto;
   }
 
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
@@ -25,34 +29,45 @@ export class ConversationService {
     });
     const conversation = await this.conversationRepository.save(row);
 
-    let conversationDto = plainToInstance(ConversationDto, conversation)
+    const conversationDto = plainToInstance(ConversationDto, conversation)
   
     return conversationDto;
   }
 
-  async getConversation(id: string): Promise<Conversation | null> {
-    return this.conversationRepository.findOne({ where: { id } });
+  async getConversation(id: string): Promise<ConversationDto | null> {
+    const conversation = await this.conversationRepository.findOne({ where: { id } });
+
+    const conversationDto = plainToInstance(ConversationDto, conversation)
+  
+    return conversationDto;
   }
 
   async updateConversation(
     id: string,
     dto: UpdateConversationDto,
-  ): Promise<Conversation | null> {
+  ): Promise<ConversationDto | null> {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
     if (!existing) return null;
     existing.title = dto.title;
     existing.messages = dto.messages ?? [];
-    return this.conversationRepository.save(existing);
+    const conversation = await this.conversationRepository.save(existing);
+
+    const conversationDto = plainToInstance(ConversationDto, conversation)
+  
+    return conversationDto;
   }
 
-  async deleteConversation(id: string): Promise<Conversation | null> {
+  async deleteConversation(id: string): Promise<ConversationDto | null> {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
     if (!existing) return null;
     await this.conversationRepository.remove(existing);
-    return existing;
+
+    const conversationDto = plainToInstance(ConversationDto, existing)
+  
+    return conversationDto;
   }
 }
