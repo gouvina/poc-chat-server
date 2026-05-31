@@ -10,6 +10,9 @@ export class ConversationDto {
     user: UserDto
 
     @IsString()
+    userId: string
+
+    @IsString()
     @IsNotEmpty()
     title: string;
 
