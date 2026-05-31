@@ -2,8 +2,7 @@ import { CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeo
 import { v4 as uuidv4 } from 'uuid';
 
 
-@Entity('baseEntity')
-export class BaseEntity {
+export abstract class BaseEntity {
     @PrimaryColumn({type: 'char', length: 36})
     id: string = uuidv4()
 

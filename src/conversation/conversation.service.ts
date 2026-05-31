@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { plainToInstance } from 'class-transformer'
@@ -24,7 +24,7 @@ export class ConversationService {
 
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const row = this.conversationRepository.create({
-      userId: dto.userId,
+      user: dto.user,
       title: dto.title,
       messages: dto.messages ?? [],
     });
@@ -39,6 +39,8 @@ export class ConversationService {
   async getConversation(id: string): Promise<ConversationDto | null> {
     const conversation = await this.conversationRepository.findOne({ where: { id } });
 
+    if (!conversation) throw new NotFoundException()
+
     const conversationDto = plainToInstance(ConversationDto, conversation)
   
     return conversationDto;
@@ -51,9 +53,9 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
-    if (!existing) return null;
-    existing.title = dto.title;
-    existing.messages = dto.messages ?? [];
+    if (!existing) throw new NotFoundException()
+    existing.title = dto.title ?? existing.title;
+    existing.messages = dto.messages ?? existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
     const conversationDto = plainToInstance(ConversationDto, conversation)
@@ -65,7 +67,7 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
-    if (!existing) return null;
+    if (!existing) throw new NotFoundException()
     await this.conversationRepository.remove(existing);
 
     const conversationDto = plainToInstance(ConversationDto, existing)
