@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,30 +26,47 @@ export class UserService {
     return userDto;
   }
 
-  async getUsers(): Promise<User[]> {
-    return this.userRepository.find({ order: { createdAt: 'ASC'} });
+  async getUsers(): Promise<UserDto[]> {
+    const users = await this.userRepository.find({ order: { createdAt: 'ASC'} });
+
+    const usersDto = users.map(user => plainToInstance(UserDto, user))
+  
+    return usersDto;
   }
 
-  async findOne(id: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { id } });
+  async getUser(id: string): Promise<UserDto | null> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) throw new NotFoundException()
+
+    const userDto = plainToInstance(UserDto, user)
+
+    return userDto;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserDto | null> {
     const existing = await this.userRepository.findOne({ where: { id } })
 
-    if (!existing) return null
+    if (!existing) throw new NotFoundException()
 
-    existing.email = updateUserDto.email
-    existing.password = updateUserDto.password
-    return this.userRepository.save(existing);
+    existing.email = updateUserDto.email ?? existing.email
+    existing.password = updateUserDto.password ?? existing.password
+    const user = await this.userRepository.save(existing);
+
+    const userDto = plainToInstance(UserDto, user)
+
+    return userDto;
   }
 
-  async deleteUser(id: string): Promise<User | null> {
+  async deleteUser(id: string): Promise<UserDto | null> {
     const existing = await this.userRepository.findOne({ where: { id } })
 
-    if (!existing) return null
+    if (!existing) throw new NotFoundException()
 
-    await this.userRepository.remove(existing)
-    return existing;
+    const user = await this.userRepository.remove(existing)
+    
+    const userDto = plainToInstance(UserDto, user)
+
+    return userDto;
   }
 }

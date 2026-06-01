@@ -10,6 +10,6 @@ export class User extends BaseEntity {
     @Column({type: 'varchar', length: 100})
     password!: string;
 
-    @OneToMany(() => Conversation, (conversation) => conversation.userId)
+    @OneToMany(() => Conversation, (conversation) => conversation.user)
     conversations: Conversation[]
 }

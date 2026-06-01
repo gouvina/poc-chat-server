@@ -12,9 +12,6 @@ import {
 @Entity('conversations')
 export class Conversation extends BaseEntity {
 
-  @Column({ type: 'char', length: 36})
-  userId!: string;
-
   @ManyToOne(() => User, (user) => user.conversations, { onDelete: 'CASCADE'})
   @JoinColumn({ name: 'userId'})
   user: User
