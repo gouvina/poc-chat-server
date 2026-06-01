@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Message } from "./message.entity";
 import { Repository } from "typeorm";
@@ -28,33 +28,47 @@ export class MessageService {
         return messageDto
     }
 
-    async getMessages(): Promise<Message[]> {
-        return this.messageRepository.find({ order: { createdAt: 'ASC' } })
+    async getMessages(): Promise<MessageDto[]> {
+        const messages = await this.messageRepository.find({ order: { createdAt: 'ASC' } })
+
+        const messagesDto = messages.map(message => plainToInstance(MessageDto, message))
+
+        return messagesDto
     }
 
-    async getMessage(id: string): Promise<Message | null> {
-        return this.messageRepository.findOne({ where: { id } })
+    async getMessage(id: string): Promise<MessageDto | null> {
+        const message = await this.messageRepository.findOne({ where: { id } })
+
+        if (!message) throw new NotFoundException()
+
+        const messageDto = plainToInstance(MessageDto, message)
+
+        return messageDto
     }
 
     async updateMessage(
         id: string,
         dto: UpdateMessageDto,
-    ): Promise<Message | null> {
+    ): Promise<MessageDto | null> {
         const existing = await this.messageRepository.findOne({ where: { id } })
 
-        if (!existing) return null
+        if (!existing) throw new NotFoundException()
 
         existing.content = dto.content
-        return this.messageRepository.save(existing)
+        const message = await this.messageRepository.save(existing)
+
+        const messageDto = plainToInstance(MessageDto, message)
+        return messageDto
     }
 
-    async deleteMessage(id: string): Promise<Message | null> {
+    async deleteMessage(id: string): Promise<MessageDto | null> {
         const existing = await this.messageRepository.findOne({ where: { id } })
 
-        if (!existing) return null
+        if (!existing) throw new NotFoundException()
 
         await this.messageRepository.remove(existing)
         
-        return existing
+        const messageDto = plainToInstance(MessageDto, existing)
+        return messageDto
     }
 }

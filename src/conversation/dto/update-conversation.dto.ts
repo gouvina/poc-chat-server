@@ -1,5 +1,5 @@
 import { IsArray, IsString, IsOptional } from 'class-validator';
-import { Message } from 'src/message/message.entity';
+import { MessageDto } from 'src/message/dto/message.dto';
 
 export class UpdateConversationDto {
 
@@ -10,5 +10,5 @@ export class UpdateConversationDto {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  messages: Message[];
+  messages: MessageDto[];
 }

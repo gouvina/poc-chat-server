@@ -1,5 +1,6 @@
 import { BaseEntity } from "src/baseEntity/baseEntity.entity";
 import { Conversation } from "src/conversation/conversation.entity";
+import { SenderType } from "./enum/SenderType";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 
@@ -10,7 +11,7 @@ export class Message extends BaseEntity {
     content!: string
 
     @Column({ type: 'varchar'})
-    sender!: string
+    sender!: SenderType
 
     @Column({type: 'char', length: 36})
     conversationId!: string;

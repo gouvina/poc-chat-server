@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator";
+import { SenderType } from "../enum/SenderType";
 
 export class CreateMessageDto {
 
@@ -8,5 +9,5 @@ export class CreateMessageDto {
 
     @IsString()
     @IsNotEmpty()
-    sender: string
+    sender: SenderType
 }

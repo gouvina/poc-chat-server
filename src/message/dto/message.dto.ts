@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { SenderType } from "../enum/SenderType";
 
 export class MessageDto {
     @IsUUID()
@@ -10,8 +11,5 @@ export class MessageDto {
     content: string
 
     @IsString()
-    sender: string
-
-    @IsString()
-    conversationId: string
+    sender: SenderType
 }
