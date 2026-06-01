@@ -1,6 +1,9 @@
-import { IsArray, IsNotEmpty, IsString, MaxLength} from 'class-validator';
+import { IsArray, IsNotEmpty, IsString} from 'class-validator';
+import { UserDto } from 'src/user/dto/user.dto';
 
 export class CreateConversationDto {
+  @IsNotEmpty()
+  user: UserDto;
 
   @IsString()
   @IsNotEmpty()
