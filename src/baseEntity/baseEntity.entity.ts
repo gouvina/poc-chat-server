@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { CreateDateColumn, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuidv4 } from 'uuid';
 
 

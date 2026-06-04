@@ -1,4 +1,5 @@
 import { IsArray, IsDate, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { MessageDto } from "src/message/dto/message.dto";
 import { UserDto } from "src/user/dto/user.dto";
 
 export class ConversationDto {
@@ -10,15 +11,12 @@ export class ConversationDto {
     user: UserDto
 
     @IsString()
-    userId: string
-
-    @IsString()
     @IsNotEmpty()
     title: string;
 
     @IsArray()
     @IsString({ each: true })
-    messages: string[];
+    messages: MessageDto[];
 
     @IsDate()
     createdAt: Date;
