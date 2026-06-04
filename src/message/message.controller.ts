@@ -14,25 +14,26 @@ export class MessagesController {
     }
 
     @Get()
-    async getMessages(): Promise<MessageDto[]> {
-        return this.messageService.getMessages()
+    async getMessages(@Param('conversationId', ParseUUIDPipe) conversationId: string): Promise<MessageDto[]> {
+        return this.messageService.getMessages(conversationId)
     }
 
     @Get(':id')
-    async getMessage(@Param('id', ParseUUIDPipe) id: string): Promise<MessageDto | null> {
-        return this.messageService.getMessage(id)
+    async getMessage(@Param('id', ParseUUIDPipe) id: string, @Param('conversationId', ParseUUIDPipe) conversationId: string): Promise<MessageDto | null> {
+        return this.messageService.getMessage(id, conversationId)
     }
 
     @Patch(':id')
     async updateMessage(
         @Param('id', ParseUUIDPipe) id: string,
+        @Param('conversationId', ParseUUIDPipe) conversationId: string,
         @Body() dto: UpdateMessageDto,
     ): Promise<MessageDto | null> {
-        return this.messageService.updateMessage(id, dto)
+        return this.messageService.updateMessage(id, conversationId, dto)
     }
 
     @Delete(':id')
-    async deleteMessage(@Param('id', ParseUUIDPipe) id: string): Promise<MessageDto | null> {
-        return this.messageService.deleteMessage(id)
+    async deleteMessage(@Param('id', ParseUUIDPipe) id: string, @Param('conversationId', ParseUUIDPipe) conversationId: string): Promise<MessageDto | null> {
+        return this.messageService.deleteMessage(id, conversationId)
     }
 }

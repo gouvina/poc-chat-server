@@ -6,25 +6,40 @@ import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
+import { Message } from 'src/message/message.entity';
+import { DataSource } from 'typeorm'
 
 @Injectable()
 export class ConversationService {
   constructor(
+    private readonly dataSource: DataSource,
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>,
   ) {}
  
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
-    const row = this.conversationRepository.create({
-      user: dto.user,
-      title: dto.title,
-      messages: dto.firstMessage ? [{content: dto.firstMessage.content, sender: dto.firstMessage.sender}] : [],
+    const conversation = await this.dataSource.transaction(async manager => {
+      const conversation = await manager.create(Conversation, {
+        user: dto.user,
+        title: dto.title,
+      });
+
+      await manager.save(conversation)
+  
+      const message = manager.create(Message, {
+        conversation,
+        content: dto.firstMessage?.content,
+        sender: dto.firstMessage?.sender,
+      });
+
+      await manager.save(message)
+  
+      return conversation;
     });
-    
-    const conversation = await this.conversationRepository.save(row);
-    
-    const conversationDto = plainToInstance(ConversationDto, conversation)
-    
+  
+    const conversationDto = plainToInstance(ConversationDto, conversation);
     return conversationDto;
   }
   
@@ -55,7 +70,7 @@ export class ConversationService {
     });
     if (!existing) throw new NotFoundException()
     existing.title = dto.title ?? existing.title;
-    existing.messages = dto.messages ?? existing.messages;
+    existing.messages = dto.messages.map(message => this.messageRepository.create({...message})) ?? existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
     const conversationDto = plainToInstance(ConversationDto, conversation)

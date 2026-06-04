@@ -13,9 +13,6 @@ export class Message extends BaseEntity {
     @Column({ type: 'varchar'})
     sender!: SenderType
 
-    @Column({type: 'char', length: 36})
-    conversationId!: string;
-
     @ManyToOne(() => Conversation, (conversation) => conversation.messages, {onDelete: 'CASCADE'})
     @JoinColumn({name: 'conversationId'})
     conversation: Conversation
