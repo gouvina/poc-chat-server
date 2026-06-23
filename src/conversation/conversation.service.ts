@@ -68,9 +68,10 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
+    console.log('Existing: ', existing)
     if (!existing) throw new NotFoundException()
     existing.title = dto.title ?? existing.title;
-    existing.messages = dto.messages.map(message => this.messageRepository.create({...message})) ?? existing.messages;
+    existing.messages = dto.messages ? dto.messages.map(message => this.messageRepository.create({...message})) : existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
     const conversationDto = plainToInstance(ConversationDto, conversation)
