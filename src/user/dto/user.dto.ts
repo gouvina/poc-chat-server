@@ -9,5 +9,9 @@ export class UserDto {
 
     @IsString()
     @IsNotEmpty()
+    username: string
+
+    @IsString()
+    @IsNotEmpty()
     email: string
 }
