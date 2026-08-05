@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
 import { comparePassword } from 'src/user/password.util';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthResponseDto } from './dto/auth-response.dto';
@@ -14,6 +15,11 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
+
+  async register(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
+    const user = await this.userService.createUser(createUserDto);
+    return this.buildAuthResponse(user);
+  }
 
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
     const user = await this.userService.findByEmailOrUsername(
@@ -33,16 +39,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload: JwtPayload = {
-      sub: user.id,
-      email: user.email,
-      username: user.username,
-    };
-
-    return {
-      accessToken: await this.jwtService.signAsync(payload),
-      user: plainToInstance(UserDto, user),
-    };
+    return this.buildAuthResponse(user);
   }
 
   async getProfile(userId: string): Promise<UserDto> {
@@ -53,5 +50,22 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  private async buildAuthResponse(user: {
+    id: string;
+    email: string;
+    username: string;
+  }): Promise<AuthResponseDto> {
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+    };
+
+    return {
+      accessToken: await this.jwtService.signAsync(payload),
+      user: plainToInstance(UserDto, user),
+    };
   }
 }

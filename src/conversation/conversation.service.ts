@@ -21,11 +21,12 @@ export class ConversationService {
  
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const conversation = await this.dataSource.transaction(async manager => {
+      console.log('dto.user: ', dto.user)
       const conversation = await manager.create(Conversation, {
         user: dto.user,
         title: dto.title,
       });
-
+      console.log('conversation: ', conversation)
       await manager.save(conversation)
   
       const message = manager.create(Message, {
@@ -33,7 +34,7 @@ export class ConversationService {
         content: dto.firstMessage?.content,
         sender: dto.firstMessage?.sender,
       });
-
+      console.log('message: ', message)
       await manager.save(message)
   
       return conversation;
