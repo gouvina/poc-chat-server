@@ -15,23 +15,18 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
-    const row = this.userRepository.create({
+    const user = await this.userRepository.save({
       email: createUserDto.email,
       password: createUserDto.password
     })
-    const user = await this.userRepository.save(row)
 
-    const userDto = plainToInstance(UserDto, user)
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 
   async getUsers(): Promise<UserDto[]> {
     const users = await this.userRepository.find({ order: { createdAt: 'ASC'} });
 
-    const usersDto = users.map(user => plainToInstance(UserDto, user))
-  
-    return usersDto;
+    return plainToInstance(UserDto, users)
   }
 
   async getUser(id: string): Promise<UserDto | null> {
@@ -39,9 +34,7 @@ export class UserService {
 
     if (!user) throw new NotFoundException()
 
-    const userDto = plainToInstance(UserDto, user)
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserDto | null> {
@@ -53,9 +46,7 @@ export class UserService {
     existing.password = updateUserDto.password ?? existing.password
     const user = await this.userRepository.save(existing);
 
-    const userDto = plainToInstance(UserDto, user)
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 
   async deleteUser(id: string): Promise<UserDto | null> {
@@ -65,8 +56,6 @@ export class UserService {
 
     const user = await this.userRepository.remove(existing)
     
-    const userDto = plainToInstance(UserDto, user)
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 }
