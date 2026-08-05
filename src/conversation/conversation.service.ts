@@ -39,16 +39,13 @@ export class ConversationService {
       return conversation;
     });
   
-    const conversationDto = plainToInstance(ConversationDto, conversation);
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation);
   }
   
   async getConversations(): Promise<ConversationDto[]> {
     const conversations = await this.conversationRepository.find({ order: { createdAt: 'ASC' } });
 
-    const conversationsDto = conversations.map(conversation => plainToInstance(ConversationDto, conversation))
-  
-    return conversationsDto;
+    return plainToInstance(ConversationDto, conversations)
   }
   
   async getConversation(id: string): Promise<ConversationDto | null> {
@@ -56,9 +53,7 @@ export class ConversationService {
 
     if (!conversation) throw new NotFoundException()
 
-    const conversationDto = plainToInstance(ConversationDto, conversation)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation)
   }
 
   async updateConversation(
@@ -74,9 +69,7 @@ export class ConversationService {
     existing.messages = dto.messages ? dto.messages.map(message => this.messageRepository.create({...message})) : existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
-    const conversationDto = plainToInstance(ConversationDto, conversation)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation)
   }
 
   async deleteConversation(id: string): Promise<ConversationDto | null> {
@@ -86,8 +79,6 @@ export class ConversationService {
     if (!existing) throw new NotFoundException()
     await this.conversationRepository.remove(existing);
 
-    const conversationDto = plainToInstance(ConversationDto, existing)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, existing)
   }
 }
