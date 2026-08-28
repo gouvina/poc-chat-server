@@ -287,12 +287,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/conversations",
+							"raw": "{{BASE_URL}}/conversations/:userId",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"conversations"
+								"conversations",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -614,7 +621,7 @@
 	"variable": [
 		{
 			"key": "BASE_URL",
-			"value": "http://localhost:3000",
+			"value": "http://localhost:3001",
 			"type": "string"
 		},
 		{

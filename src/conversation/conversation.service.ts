@@ -43,8 +43,12 @@ export class ConversationService {
     return conversationDto;
   }
   
-  async getConversations(): Promise<ConversationDto[]> {
-    const conversations = await this.conversationRepository.find({ order: { createdAt: 'ASC' } });
+  async getConversations(userId: string): Promise<ConversationDto[]> {
+    console.log(userId)
+    const conversations = await this.conversationRepository.find({ 
+      where: { user: { id: userId } },
+      order: { createdAt: 'ASC' } 
+    });
 
     const conversationsDto = conversations.map(conversation => plainToInstance(ConversationDto, conversation))
   

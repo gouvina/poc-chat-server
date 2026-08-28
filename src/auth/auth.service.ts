@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
-    const user = await this.userService.createUser(createUserDto);
+    const user = await this.userService.createUser({...createUserDto, password: Buffer.from(createUserDto.password, 'base64').toString('utf-8')});
     return this.buildAuthResponse(user);
   }
 
@@ -31,7 +31,7 @@ export class AuthService {
     }
 
     const passwordMatches = await comparePassword(
-      loginDto.password,
+      Buffer.from(loginDto.password, 'base64').toString('utf-8'),
       user.password,
     );
 

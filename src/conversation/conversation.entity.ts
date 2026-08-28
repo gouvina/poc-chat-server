@@ -14,7 +14,7 @@ export class Conversation extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.conversations, { onDelete: 'CASCADE'})
   @JoinColumn({ name: 'userId'})
-  user: User
+  user!: User;
   
   @Column({type: 'varchar', length: 300})
   title!: string;

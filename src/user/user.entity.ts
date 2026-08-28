@@ -14,5 +14,5 @@ export class User extends BaseEntity {
     password!: string;
 
     @OneToMany(() => Conversation, (conversation) => conversation.user)
-    conversations: Conversation[]
+    conversations: Conversation[] | undefined
 }

@@ -25,9 +25,9 @@ export class ConversationController {
     return this.conversationService.createConversation(dto);
   }
 
-  @Get()
-  async getConversations(): Promise<ConversationDto[]> {
-    return this.conversationService.getConversations();
+  @Get(':userId')
+  async getConversations(@Param('userId', ParseUUIDPipe) userId: string): Promise<ConversationDto[]> {
+    return this.conversationService.getConversations(userId);
   }
 
   @Get(':id')

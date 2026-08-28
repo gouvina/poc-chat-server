@@ -47,7 +47,7 @@ export class UserService {
     const row = this.userRepository.create({
       username: createUserDto.username,
       email: createUserDto.email,
-      password: await hashPassword(createUserDto.password),
+      password: await hashPassword(Buffer.from(createUserDto.password, 'base64').toString('utf-8')),
     });
     const user = await this.userRepository.save(row);
 
@@ -99,7 +99,7 @@ export class UserService {
     existing.email = nextEmail;
     existing.username = nextUsername;
     if (updateUserDto.password) {
-      existing.password = await hashPassword(updateUserDto.password);
+      existing.password = await hashPassword(Buffer.from(updateUserDto.password, 'base64').toString('utf-8'));
     }
     const user = await this.userRepository.save(existing);
 
