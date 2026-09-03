@@ -25,7 +25,7 @@ export class CreateUserDto {
   @Matches(/^[a-zA-Z0-9_]+$/, {
     message: 'Username can only contain letters, numbers, and underscores',
   })
-  username: string;
+  username!: string;
 
   @Transform(({ value }) =>
     typeof value === 'string' ? value.trim().toLowerCase() : value,
@@ -33,7 +33,7 @@ export class CreateUserDto {
   @IsEmail({}, { message: 'Email must be a valid email address' })
   @IsNotEmpty()
   @MaxLength(100)
-  email: string;
+  email!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -43,5 +43,5 @@ export class CreateUserDto {
   @MaxLength(PASSWORD_MAX_LENGTH, {
     message: `Password must be at most ${PASSWORD_MAX_LENGTH} characters long`,
   })
-  password: string;
+  password!: string;
 }

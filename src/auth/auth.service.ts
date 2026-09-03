@@ -51,20 +51,81 @@ export class AuthService {
 
     return user;
   }
+  
+  async refresh(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+  
+      const user = await this.userService.findByEmailOrUsername(payload.email);
+  
+      if (!user) {
+        throw new UnauthorizedException();
+      }
+  
+      const accessToken = await this.jwtService.signAsync(
+        {
+          sub: user.id,
+          email: user.email,
+          username: user.username,
+        },
+        {
+          secret: process.env.JWT_ACCESS_SECRET,
+          expiresIn: '15m',
+        },
+      );
+  
+      return {
+        accessToken,
+      };
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  private async generateTokens(user: {
+    id: string;
+    email: string;
+    username: string;
+  }) {
+    const accessPayload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+    };
+  
+    const refreshPayload = {
+      sub: user.id,
+    };
+  
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(accessPayload, {
+        secret: process.env.JWT_ACCESS_SECRET,
+        expiresIn: '15m',
+      }),
+  
+      this.jwtService.signAsync(refreshPayload, {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d',
+      }),
+    ]);
+  
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
 
   private async buildAuthResponse(user: {
     id: string;
     email: string;
     username: string;
   }): Promise<AuthResponseDto> {
-    const payload: JwtPayload = {
-      sub: user.id,
-      email: user.email,
-      username: user.username,
-    };
+    const tokens = await this.generateTokens(user);
 
     return {
-      accessToken: await this.jwtService.signAsync(payload),
+      ...tokens,
       user: plainToInstance(UserDto, user),
     };
   }

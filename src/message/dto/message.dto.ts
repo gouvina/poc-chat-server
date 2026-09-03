@@ -5,11 +5,11 @@ export class MessageDto {
     @IsUUID()
     @IsString()
     @IsNotEmpty()
-    id: string
+    id!: string
 
     @IsString()
-    content: string
+    content!: string
 
     @IsString()
-    sender: SenderType
+    sender!: SenderType
 }

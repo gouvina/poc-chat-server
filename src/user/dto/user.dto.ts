@@ -5,13 +5,13 @@ export class UserDto {
     @IsUUID()
     @IsString()
     @IsNotEmpty()
-    id: string
+    id!: string
 
     @IsString()
     @IsNotEmpty()
-    username: string
+    username!: string
 
     @IsString()
     @IsNotEmpty()
-    email: string
+    email!: string
 }

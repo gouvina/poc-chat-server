@@ -5,11 +5,11 @@ export class CreateMessageDto {
     
     @IsString()
     @IsNotEmpty()
-    content: string
+    content!: string
 
     @IsString()
     @IsNotEmpty()
-    sender: SenderType
+    sender!: SenderType
 
 
 }

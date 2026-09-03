@@ -6,18 +6,18 @@ export class ConversationDto {
     @IsUUID()
     @IsString()
     @IsNotEmpty()
-    id: string;
+    id!: string;
 
-    user: UserDto
+    user!: UserDto
 
     @IsString()
     @IsNotEmpty()
-    title: string;
+    title!: string;
 
     @IsArray()
     @IsString({ each: true })
-    messages: MessageDto[];
+    messages!: MessageDto[];
 
     @IsDate()
-    createdAt: Date;
+    createdAt!: Date;
 }

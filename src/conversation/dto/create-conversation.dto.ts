@@ -5,11 +5,11 @@ import { UserDto } from 'src/user/dto/user.dto';
 
 export class CreateConversationDto {
   @IsNotEmpty()
-  user: UserDto;
+  user!: UserDto;
 
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title!: string;
 
   @ValidateNested()
   @Type(() => CreateMessageDto)

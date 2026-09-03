@@ -6,11 +6,11 @@ export class UpdateConversationDto {
 
   @IsString()
   @IsOptional()
-  title: string;
+  title?: string;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UpdateMessageDto)
   @IsOptional()
-  messages: UpdateMessageDto[];
+  messages?: UpdateMessageDto[];
 }
