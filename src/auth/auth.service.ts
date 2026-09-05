@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
-    const user = await this.userService.createUser({...createUserDto, password: Buffer.from(createUserDto.password, 'base64').toString('utf-8')});
+    const user = await this.userService.createUser(createUserDto);
     return this.buildAuthResponse(user);
   }
 
@@ -58,7 +58,7 @@ export class AuthService {
         secret: process.env.JWT_REFRESH_SECRET,
       });
   
-      const user = await this.userService.findByEmailOrUsername(payload.email);
+      const user = await this.userService.getUser(payload.sub);
   
       if (!user) {
         throw new UnauthorizedException();
