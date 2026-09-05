@@ -1,4 +1,5 @@
-import { IsArray, IsNotEmpty, IsString} from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsString, ValidateNested} from 'class-validator';
 import { UserDto } from 'src/user/dto/user.dto';
 
 export class CreateConversationDto {
@@ -10,6 +11,7 @@ export class CreateConversationDto {
   @IsString({ each: true })
   messages: string[];
 
-  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => UserDto)
   user: UserDto;
 }
