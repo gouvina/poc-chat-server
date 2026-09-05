@@ -10,7 +10,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{JWT_TOKEN}}",
+				"value": "{{ACCESS_TOKEN}}",
 				"type": "string"
 			}
 		]
@@ -18,6 +18,31 @@
 	"item": [
 		{
 			"name": "Auth",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if (pm.request.body?.mode === 'raw') {",
+							"    const body = JSON.parse(pm.request.body.raw);",
+							"    if (body.password) {",
+							"        body.password = btoa(body.password);",
+							"        pm.request.body.update({",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify(body),",
+							"            options: {",
+							"                raw: {",
+							"                    language: 'json'",
+							"                }",
+							"            }",
+							"        });",
+							"    }",
+							"}"
+						]
+					}
+				}
+			],
 			"item": [
 				{
 					"name": "Register",
@@ -31,7 +56,8 @@
 									"  pm.response.to.have.status(201);",
 									"});",
 									"const r = pm.response.json();",
-									"pm.collectionVariables.set('JWT_TOKEN', r.accessToken);"
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
+									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
 								]
 							}
 						}
@@ -81,7 +107,8 @@
 									"  pm.response.to.have.status(201);",
 									"});",
 									"const r = pm.response.json();",
-									"pm.collectionVariables.set('JWT_TOKEN', r.accessToken);"
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
+									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
 								]
 							}
 						}
@@ -133,6 +160,53 @@
 								"auth",
 								"me"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const r = pm.response.json();",
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/refresh",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						},
+						"auth": {
+							"type": "noauth"
 						}
 					},
 					"response": []
@@ -621,11 +695,16 @@
 	"variable": [
 		{
 			"key": "BASE_URL",
-			"value": "http://localhost:3001",
+			"value": "http://localhost:3000",
 			"type": "string"
 		},
 		{
-			"key": "JWT_TOKEN",
+			"key": "ACCESS_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "REFRESH_TOKEN",
 			"value": "",
 			"type": "string"
 		}

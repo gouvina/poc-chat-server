@@ -1,7 +1,11 @@
+import { IsString } from "class-validator";
+
 export class RefreshTokenDto {
+    @IsString()
     refreshToken!: string;
   }
 
-export class RefreshResponseDto {  
+export class RefreshResponseDto {
+    @IsString()
     accessToken!: string;
   }
