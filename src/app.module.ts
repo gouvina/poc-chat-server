@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConversationModule } from './conversation/conversation.module';
 import { UserModule } from './user/user.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
     }),
     ConversationModule,
     UserModule,
+    MessageModule,
   ],
 })
 export class AppModule {}

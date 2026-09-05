@@ -43,7 +43,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
 								}
 							]
 						}
@@ -53,26 +53,26 @@
 				{
 					"name": "Conversation",
 					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"\",\r\n    \"title\": \"First chat\",\r\n    \"messages\": [\"Hello\", \"How are you?\"]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/conversations",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"conversations"
-							]
+					  "method": "POST",
+					  "header": [],
+					  "body": {
+						"mode": "raw",
+						"raw": "{\r\n  \"user\": {\r\n    \"id\": \"\",\r\n    \"email\": \"\"\r\n  },\r\n  \"title\": \"First chat\",\r\n  \"firstMessage\": {\r\n    \"content\": \"Hello\",\r\n    \"sender\": \"USER\"\r\n  }\r\n}",
+						"options": {
+						  "raw": {
+							"language": "json"
+						  }
 						}
+					  },
+					  "url": {
+						"raw": "{{BASE_URL}}/conversations",
+						"host": [
+						  "{{BASE_URL}}"
+						],
+						"path": [
+						  "conversations"
+						]
+					  }
 					},
 					"response": []
 				},
@@ -83,7 +83,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Updated chat\",\r\n    \"messages\": [\"Hi again\", \"Updated message\"]\r\n}",
+							"raw": "{\r\n    \"title\": \"Updated chat\",\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Hi again\",\r\n        \"sender\": \"USER\"\r\n      },\r\n      {\r\n        \"content\": \"Updated message\",\r\n        \"sender\": \"ASSISTANT\"\r\n      }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -102,7 +102,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
 								}
 							]
 						}
@@ -126,7 +126,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
 								}
 							]
 						}
@@ -172,7 +172,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
 								}
 							]
 						}
@@ -231,7 +231,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
 								}
 							]
 						}
@@ -255,7 +255,173 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:conversationId/messages",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":conversationId",
+								"messages"
+							],
+							"variable": [
+								{
+									"conversationId": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:conversationId/messages/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":conversationId",
+								"messages",
+								":id"
+							],
+							"variable": [
+								{
+									"conversationId": "id",
+									"value": ""
+								},
+								{
+									
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"A New Message\",\r\n    \"sender\": \"USER\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:conversationId/messages",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":conversationId",
+								"messages"
+							],
+							"variable": [
+								{
+									"conversationId": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Conversation",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Edited Message\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:conversationId/messages/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":conversationId",
+								"messages",
+								":id"
+							],
+							"variable": [
+								{
+									"conversationId": "id",
+									"value": ""
+								},
+								{
+									
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/conversations/:conversationId/messages/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"conversations",
+								":conversationId",
+								"messages",
+								":id"
+							],
+							"variable": [
+								{
+									"conversationId": "id",
+									"value": ""
+								},
+								{
+									
+									"key": "id",
+									"value": ""
 								}
 							]
 						}

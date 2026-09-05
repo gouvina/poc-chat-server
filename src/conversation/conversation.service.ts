@@ -13,25 +13,35 @@ export class ConversationService {
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
   ) {}
-
+ 
+  async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
+    const conversation = await this.conversationRepository.save({
+      user: dto.user,
+      title: dto.title,
+      messages: [
+        {
+          content: dto.firstMessage?.content,
+          sender: dto.firstMessage?.sender
+        }
+      ]
+    })
+  
+    return plainToInstance(ConversationDto, conversation);
+  }
+  
   async getConversations(): Promise<ConversationDto[]> {
     const conversations = await this.conversationRepository.find({ order: { createdAt: 'ASC' } });
 
     return plainToInstance(ConversationDto, conversations)
   }
-
-  async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
-    const conversation = await this.conversationRepository.save({
-      user: dto.user,
-      title: dto.title,
-      messages: dto.messages ?? [],
-    });
-
-    return plainToInstance(ConversationDto, conversation)
-  }
-
+  
   async getConversation(id: string): Promise<ConversationDto | null> {
-    const conversation = await this.conversationRepository.findOne({ where: { id } });
+    const conversation = await this.conversationRepository.findOne({ 
+      where: { id }, 
+      relations: { 
+        messages: true
+      } 
+    });
 
     if (!conversation) throw new NotFoundException()
 
@@ -45,9 +55,10 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
+
     if (!existing) throw new NotFoundException()
+      
     existing.title = dto.title ?? existing.title;
-    existing.messages = dto.messages ?? existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
     return plainToInstance(ConversationDto, conversation)
