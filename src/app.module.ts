@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConversationModule } from './conversation/conversation.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConversationModule } from './conversation/conversation.module';
       }),
     }),
     ConversationModule,
+    UserModule,
   ],
 })
 export class AppModule {}

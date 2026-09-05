@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"First chat\",\r\n    \"messages\": [\"Hello\", \"How are you?\"]\r\n}",
+							"raw": "{\r\n    \"userId\": \"\",\r\n    \"title\": \"First chat\",\r\n    \"messages\": [\"Hello\", \"How are you?\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -77,43 +77,9 @@
 					"response": []
 				},
 				{
-					"name": "Send message",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"message\": \"Hello from frontend\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/conversations/:id/messages",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"conversations",
-								":id",
-								"messages"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Conversation",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -155,6 +121,135 @@
 							],
 							"path": [
 								"conversations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"password123\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"updated@email.com\",\r\n    \"password\": \"passwordUpdate\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
 								":id"
 							],
 							"variable": [
