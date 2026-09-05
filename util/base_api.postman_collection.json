@@ -670,6 +670,188 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Rollos",
+			"item": [
+				{
+					"name": "Get Rollos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/rollos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rollos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rollo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/rollos/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rollos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rollo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"nombre\": \"documentos-1997\",\n  \"cantidad_documentos\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/rollos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rollos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documentos",
+			"item": [
+				{
+					"name": "Get Documentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documentos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documentos Filtered",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documentos?version=v1&rollo=1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documentos"
+							],
+							"query": [
+								{
+									"key": "version",
+									"value": "v1"
+								},
+								{
+									"key": "rollo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documentos/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documentos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Documento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"hoja\": 1,\n  \"calificacion\": 5,\n  \"version\": \"v1\",\n  \"texto\": \"documento de prueba\",\n  \"rollo\": {\n  \"id\": 1,\n  \"nombre\": \"documentos-1997\",\n \"cantidad_documentos\": 1\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/documentos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documentos"
+							]
+
+						}
+					},
+					"response": {}
+				}
+			]
 		}
 	],
 	"event": [

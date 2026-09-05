@@ -5,6 +5,8 @@ import { ConversationModule } from './conversation/conversation.module';
 import { UserModule } from './user/user.module';
 import { MessageModule } from './message/message.module';
 import { AuthModule } from './auth/auth.module';
+import { RolloModule } from './rollo/rollo.module';
+import { DocumentoModule } from './documento/documento,module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     MessageModule,
     AuthModule,
+    RolloModule,
+    DocumentoModule
   ],
 })
 export class AppModule {}

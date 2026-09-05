@@ -20,7 +20,7 @@ export class Conversation extends BaseEntity {
   title!: string;
   
   @OneToMany(() => Message, (message) => message.conversation, {cascade: true})
-  messages: Message[]
+  messages!: Message[]
 
   @Column({ name: '_archived', default: false })
   _archived!: boolean;

@@ -44,7 +44,6 @@ export class ConversationService {
   }
   
   async getConversations(userId: string): Promise<ConversationDto[]> {
-    console.log(userId)
     const conversations = await this.conversationRepository.find({ 
       where: { user: { id: userId } },
       order: { createdAt: 'ASC' } 
