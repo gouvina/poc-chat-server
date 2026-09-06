@@ -8,14 +8,14 @@ export class ConversationDto {
     @IsString()
     @IsNotEmpty()
     id: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    title: string;
 
     @ValidateNested()
     @Type(() => UserDto)
     user: UserDto
-
-    @IsString()
-    @IsNotEmpty()
-    title: string;
 
     @ValidateNested()
     @Type(() => MessageDto)
