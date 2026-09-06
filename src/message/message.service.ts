@@ -6,47 +6,40 @@ import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageDto } from "./dto/message.dto";
 import { plainToInstance } from "class-transformer";
 import { UpdateMessageDto } from "./dto/update-message.dto";
-import { Conversation } from "src/conversation/conversation.entity";
+import { ConversationService } from "src/conversation/conversation.service";
 
 @Injectable()
 export class MessageService {
     constructor(
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
-        @InjectRepository(Conversation)
-        private readonly conversationRepository: Repository<Conversation>,
+        private readonly conversationService: ConversationService,
     ) {}
 
     async createMessage(conversationId: string, dto: CreateMessageDto): Promise<MessageDto> {
-        let conversation = await this.conversationRepository.findOne({ where: { id: conversationId } })
+        const conversation = await this.conversationService.getConversation(conversationId)
 
         if (!conversation) throw new NotFoundException()
 
-        const row = this.messageRepository.create({
+        const message = this.messageRepository.save({
             conversation: conversation,
             content: dto.content,
             sender: dto.sender,
         })
 
-        const message = await this.messageRepository.save(row)
-
-        let messageDto = plainToInstance(MessageDto, message)
-
-        return messageDto
+        return plainToInstance(MessageDto, message)
     }
 
     async getMessages(conversationId: string): Promise<MessageDto[]> {
-        const conversation = await this.conversationRepository.findOne({ where: { id: conversationId }, relations: ['messages'] })
-
+        const conversation = await this.conversationService.getConversation(conversationId)
+        
         if (!conversation) throw new NotFoundException()
 
-        const messagesDto = conversation.messages.map(message => plainToInstance(MessageDto, message))
-
-        return messagesDto
+        return plainToInstance(MessageDto, conversation.messages)
     }
 
     async getMessage(id: string, conversationId: string): Promise<MessageDto | null> {
-        const conversation = await this.conversationRepository.findOne({ where: { id: conversationId }, relations: ['messages'] })
+        const conversation = await this.conversationService.getConversation(conversationId)
 
         if (!conversation) throw new NotFoundException()
 
@@ -55,9 +48,7 @@ export class MessageService {
 
         if (!message) throw new NotFoundException()
 
-        const messageDto = plainToInstance(MessageDto, message)
-
-        return messageDto
+        return plainToInstance(MessageDto, message)
     }
 
     async updateMessage(
@@ -66,7 +57,7 @@ export class MessageService {
         dto: UpdateMessageDto,
     ): Promise<MessageDto | null> {
 
-        const conversation = await this.conversationRepository.findOne({ where: { id: conversationId }, relations: ['messages'] })
+        const conversation = await this.conversationService.getConversation(conversationId)
 
         if (!conversation) throw new NotFoundException()
 
@@ -81,27 +72,22 @@ export class MessageService {
         conversation.messages.splice(conversation.messages.indexOf(existing), 1, message)
         conversation.messages.push(message)
 
-        await this.conversationRepository.save(conversation)
-
-        const messageDto = plainToInstance(MessageDto, message)
-        return messageDto
+        return plainToInstance(MessageDto, message)
     }
 
     async deleteMessage(id: string, conversationId: string): Promise<MessageDto | null> {
-        const conversation = await this.conversationRepository.findOne({ where: { id: conversationId }, relations: ['messages'] })
+        const conversation = await this.conversationService.getConversation(conversationId)
 
         if (!conversation) throw new NotFoundException()
 
-        const existing = conversation.messages.find(message => message.id === id)
+        const existing = await this.messageRepository.findOne({where: { id }})
 
-        if (!existing) throw new NotFoundException()
+        if (!existing || !conversation.messages.find(message => message.id === id)) throw new NotFoundException()
 
         conversation.messages.splice(conversation.messages.indexOf(existing), 1)
-        
-        await this.conversationRepository.save(conversation)
+     
         await this.messageRepository.remove(existing)
 
-        const messageDto = plainToInstance(MessageDto, existing)
-        return messageDto
+        return plainToInstance(MessageDto, existing)
     }
 }

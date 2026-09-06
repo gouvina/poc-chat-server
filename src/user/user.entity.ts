@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/baseEntity/baseEntity.entity";
+import { BaseEntity } from "src/baseEntity/base.entity";
 import { Conversation } from "src/conversation/conversation.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 
@@ -14,5 +14,5 @@ export class User extends BaseEntity {
     password!: string;
 
     @OneToMany(() => Conversation, (conversation) => conversation.user)
-    conversations: Conversation[] | undefined
+    conversations?: Conversation[]
 }
