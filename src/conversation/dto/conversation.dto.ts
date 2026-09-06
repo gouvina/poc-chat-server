@@ -7,17 +7,14 @@ export class ConversationDto {
     @IsString()
     @IsNotEmpty()
     id: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    title: string;
 
     @ValidateNested()
     @Type(() => UserDto)
     user: UserDto
-
-    @IsString()
-    userId: string
-
-    @IsString()
-    @IsNotEmpty()
-    title: string;
 
     @IsArray()
     @IsString({ each: true })
