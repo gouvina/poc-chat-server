@@ -1,16 +1,9 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsString, IsOptional, ValidateNested } from 'class-validator';
-import { UpdateMessageDto } from 'src/message/dto/update-message.dto';
+import { IsString, IsOptional } from 'class-validator';
 
 export class UpdateConversationDto {
 
   @IsString()
   @IsOptional()
-  title: string;
+  title!: string;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateMessageDto)
-  @IsOptional()
-  messages: UpdateMessageDto[];
 }

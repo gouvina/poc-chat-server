@@ -22,27 +22,13 @@ export class MessageService {
 
         if (!conversation) throw new NotFoundException()
 
-        const row = this.messageRepository.create({
+        const message = this.messageRepository.save({
             conversation: conversation,
             content: dto.content,
             sender: dto.sender,
         })
 
-        const message = await this.messageRepository.save(row)
-
-        let messageDto = plainToInstance(MessageDto, message)
-
-        return messageDto
-    }
-
-    async getMessages(conversationId: string): Promise<MessageDto[]> {
-        const conversation = await this.conversationRepository.findOne({ where: { id: conversationId }, relations: ['messages'] })
-
-        if (!conversation) throw new NotFoundException()
-
-        const messagesDto = conversation.messages.map(message => plainToInstance(MessageDto, message))
-
-        return messagesDto
+        return plainToInstance(MessageDto, message)
     }
 
     async getMessage(id: string, conversationId: string): Promise<MessageDto | null> {

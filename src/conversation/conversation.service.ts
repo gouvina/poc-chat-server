@@ -6,38 +6,27 @@ import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
-import { Message } from 'src/message/message.entity';
-import { DataSource } from 'typeorm'
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class ConversationService {
   constructor(
-    private readonly dataSource: DataSource,
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
-    @InjectRepository(Message)
-    private readonly messageRepository: Repository<Message>,
+    private readonly messageService: MessageService,
   ) {}
  
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
-    const conversation = await this.dataSource.transaction(async manager => {
-      const conversation = await manager.create(Conversation, {
-        user: dto.user,
-        title: dto.title,
-      });
-
-      await manager.save(conversation)
-  
-      const message = manager.create(Message, {
-        conversation,
-        content: dto.firstMessage?.content,
-        sender: dto.firstMessage?.sender,
-      });
-
-      await manager.save(message)
-  
-      return conversation;
-    });
+    const conversation = await this.conversationRepository.save({
+      user: dto.user,
+      title: dto.title,
+      messages: [
+        {
+          content: dto.firstMessage?.content,
+          sender: dto.firstMessage?.sender
+        }
+      ]
+    })
   
     return plainToInstance(ConversationDto, conversation);
   }
@@ -63,10 +52,10 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
-    console.log('Existing: ', existing)
+
     if (!existing) throw new NotFoundException()
+      
     existing.title = dto.title ?? existing.title;
-    existing.messages = dto.messages ? dto.messages.map(message => this.messageRepository.create({...message})) : existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
     return plainToInstance(ConversationDto, conversation)

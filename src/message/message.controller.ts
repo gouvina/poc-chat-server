@@ -13,11 +13,6 @@ export class MessagesController {
         return this.messageService.createMessage(conversationId, dto)
     }
 
-    @Get()
-    async getMessages(@Param('conversationId', ParseUUIDPipe) conversationId: string): Promise<MessageDto[]> {
-        return this.messageService.getMessages(conversationId)
-    }
-
     @Get(':id')
     async getMessage(@Param('id', ParseUUIDPipe) id: string, @Param('conversationId', ParseUUIDPipe) conversationId: string): Promise<MessageDto | null> {
         return this.messageService.getMessage(id, conversationId)
