@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString } from "class-validator";
-import { SenderType } from "../enum/SenderType";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { SenderType } from "../enum/sender-type.enum";
 
 export class CreateMessageDto {
     
@@ -7,7 +7,7 @@ export class CreateMessageDto {
     @IsNotEmpty()
     content!: string
 
-    @IsString()
+    @IsEnum(SenderType)
     @IsNotEmpty()
     sender!: SenderType
 

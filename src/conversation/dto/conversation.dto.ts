@@ -7,20 +7,20 @@ export class ConversationDto {
     @IsUUID()
     @IsString()
     @IsNotEmpty()
-    id: string;
+    id!: string;
     
     @IsString()
     @IsNotEmpty()
-    title: string;
+    title!: string;
 
     @ValidateNested()
     @Type(() => UserDto)
-    user: UserDto
+    user!: UserDto
 
     @ValidateNested()
     @Type(() => MessageDto)
-    messages: MessageDto[];
+    messages!: MessageDto[];
 
     @IsDate()
-    createdAt: Date;
+    createdAt!: Date;
 }

@@ -6,14 +6,12 @@ import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
-import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class ConversationService {
   constructor(
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
-    private readonly messageService: MessageService,
   ) {}
  
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
@@ -38,7 +36,12 @@ export class ConversationService {
   }
   
   async getConversation(id: string): Promise<ConversationDto | null> {
-    const conversation = await this.conversationRepository.findOne({ where: { id } });
+    const conversation = await this.conversationRepository.findOne({ 
+      where: { id }, 
+      relations: { 
+        messages: true
+      } 
+    });
 
     if (!conversation) throw new NotFoundException()
 

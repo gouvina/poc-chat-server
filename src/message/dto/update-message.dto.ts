@@ -1,11 +1,13 @@
-import { IsOptional, IsString } from "class-validator";
-import { SenderType } from "../enum/SenderType";
+import { IsEnum, IsOptional, IsString } from "class-validator";
+import { SenderType } from "../enum/sender-type.enum";
 
 export class UpdateMessageDto {
-    @IsOptional()
-    sender?: SenderType
     
     @IsString()
     @IsOptional()
     content?: string
+    
+    @IsEnum(SenderType)
+    @IsOptional()
+    sender?: SenderType
 }

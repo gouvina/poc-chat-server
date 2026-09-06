@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
-import { SenderType } from "../enum/SenderType";
+import { SenderType } from "../enum/sender-type.enum";
 
 export class MessageDto {
     @IsUUID()
