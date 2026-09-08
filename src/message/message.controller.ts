@@ -1,11 +1,9 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageService } from "./message.service";
 import { UpdateMessageDto } from "./dto/update-message.dto";
 import { MessageDto } from "./dto/message.dto";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
-@UseGuards(JwtAuthGuard)
 @Controller('conversations/:conversationId/messages')
 export class MessagesController {
     constructor(private readonly messageService: MessageService) {}

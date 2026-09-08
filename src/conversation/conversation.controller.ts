@@ -6,16 +6,13 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  Post,
-  UseGuards,
+  Post
 } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller('conversations')
 export class ConversationController {
   constructor(private readonly conversationService: ConversationService) {}
@@ -25,13 +22,14 @@ export class ConversationController {
     return this.conversationService.createConversation(dto);
   }
 
-  @Get(':userId')
+  @Get('user/:userId')
   async getConversations(@Param('userId', ParseUUIDPipe) userId: string): Promise<ConversationDto[]> {
     return this.conversationService.getConversations(userId);
   }
 
   @Get(':id')
   async getConversation(@Param('id', ParseUUIDPipe) id: string): Promise<ConversationDto | null> {
+    console.log('Entre a conversation controller')
     return this.conversationService.getConversation(id);
   }
 

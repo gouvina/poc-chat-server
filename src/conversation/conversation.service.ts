@@ -30,7 +30,6 @@ export class ConversationService {
   }
   
   async getConversations(userId: string): Promise<ConversationDto[]> {
-    console.log(userId)
     const conversations = await this.conversationRepository.find({ 
       where: { user: { id: userId } },
       order: { createdAt: 'ASC' } 
@@ -40,6 +39,7 @@ export class ConversationService {
   }
   
   async getConversation(id: string): Promise<ConversationDto | null> {
+    console.log('Entre a conversation.service getConversation con id: ', id)
     const conversation = await this.conversationRepository.findOne({ 
       where: { id }, 
       relations: { 
@@ -47,7 +47,9 @@ export class ConversationService {
       } 
     });
 
-    if (!conversation) throw new NotFoundException()
+    if (!conversation) { throw new NotFoundException() }
+
+    console.log('Conversation: ', conversation)
 
     return plainToInstance(ConversationDto, conversation)
   }

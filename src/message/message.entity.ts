@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/baseEntity/base.entity";
-import { Conversation } from "src/conversation/conversation.entity";
+import { Conversation } from "src//conversation/conversation.entity";
 import { SenderType } from "./enum/sender-type.enum";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 

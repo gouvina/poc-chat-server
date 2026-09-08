@@ -3,7 +3,6 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -14,19 +13,16 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers(): Promise<UserDto[]> {
     return this.userService.getUsers();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto | null> {
     return this.userService.getUser(id); 
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateUser(
     @Param('id', ParseUUIDPipe) id: string,
@@ -35,7 +31,6 @@ export class UserController {
     return this.userService.updateUser(id, updateUserDto) 
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto | null> {
     return this.userService.deleteUser(id); 

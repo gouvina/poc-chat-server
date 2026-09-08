@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/baseEntity/base.entity';
-import { Message } from 'src/message/message.entity';
-import { User } from 'src/user/user.entity';
+import { Message } from 'src//message/message.entity';
+import { User } from 'src//user/user.entity';
 import {
   Column,
   Entity,
