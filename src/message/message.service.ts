@@ -6,7 +6,7 @@ import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageDto } from "./dto/message.dto";
 import { plainToInstance } from "class-transformer";
 import { UpdateMessageDto } from "./dto/update-message.dto";
-import { ConversationService } from "src/conversation/conversation.service";
+import { ConversationService } from "src//conversation/conversation.service";
 
 @Injectable()
 export class MessageService {

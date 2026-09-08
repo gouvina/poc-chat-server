@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageService } from "./message.service";
 import { UpdateMessageDto } from "./dto/update-message.dto";

@@ -29,8 +29,11 @@ export class ConversationService {
     return plainToInstance(ConversationDto, conversation);
   }
   
-  async getConversations(): Promise<ConversationDto[]> {
-    const conversations = await this.conversationRepository.find({ order: { createdAt: 'ASC' } });
+  async getConversations(userId: string): Promise<ConversationDto[]> {
+    const conversations = await this.conversationRepository.find({ 
+      where: { user: { id: userId } },
+      order: { createdAt: 'ASC' } 
+    });
 
     return plainToInstance(ConversationDto, conversations)
   }
@@ -43,7 +46,7 @@ export class ConversationService {
       } 
     });
 
-    if (!conversation) throw new NotFoundException()
+    if (!conversation) { throw new NotFoundException() }
 
     return plainToInstance(ConversationDto, conversation)
   }

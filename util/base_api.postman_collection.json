@@ -5,85 +5,77 @@
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16523924"
 	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{ACCESS_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
 	"item": [
 		{
-			"name": "Conversations",
+			"name": "Auth",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if (pm.request.body?.mode === 'raw') {",
+							"    const body = JSON.parse(pm.request.body.raw);",
+							"    if (body.password) {",
+							"        body.password = btoa(body.password);",
+							"        pm.request.body.update({",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify(body),",
+							"            options: {",
+							"                raw: {",
+							"                    language: 'json'",
+							"                }",
+							"            }",
+							"        });",
+							"    }",
+							"}"
+						]
+					}
+				}
+			],
 			"item": [
 				{
-					"name": "Conversations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/conversations",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"conversations"
-							]
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Register successful', function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"const r = pm.response.json();",
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
+									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
+								]
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Conversation",
+					],
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/conversations/:id",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"conversations",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Conversation",
-					"request": {
-					  "method": "POST",
-					  "header": [],
-					  "body": {
-						"mode": "raw",
-						"raw": "{\r\n  \"user\": {\r\n    \"id\": \"\",\r\n    \"email\": \"\"\r\n  },\r\n  \"title\": \"First chat\",\r\n  \"firstMessage\": {\r\n    \"content\": \"Hello\",\r\n    \"sender\": \"USER\"\r\n  }\r\n}",
-						"options": {
-						  "raw": {
-							"language": "json"
-						  }
-						}
-					  },
-					  "url": {
-						"raw": "{{BASE_URL}}/conversations",
-						"host": [
-						  "{{BASE_URL}}"
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
 						],
-						"path": [
-						  "conversations"
-						]
-					  }
-					},
-					"response": []
-				},
-				{
-					"name": "Conversation",
-					"request": {
-						"method": "PATCH",
-						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Updated chat\",\r\n    \"messages\": [\r\n      {\r\n        \"content\": \"Hi again\",\r\n        \"sender\": \"USER\"\r\n      },\r\n      {\r\n        \"content\": \"Updated message\",\r\n        \"sender\": \"ASSISTANT\"\r\n      }\r\n    ]\r\n}",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,12 +83,193 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/conversations/:id",
+							"raw": "{{BASE_URL}}/auth/register",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"conversations",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"const r = pm.response.json();",
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
+									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/me",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const r = pm.response.json();",
+									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/refresh",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						},
+						"auth": {
+							"type": "noauth"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if (pm.request.body?.mode === 'raw') {",
+							"    const body = JSON.parse(pm.request.body.raw);",
+							"    if (body.password) {",
+							"        body.password = btoa(body.password);",
+							"        pm.request.body.update({",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify(body),",
+							"            options: {",
+							"                raw: {",
+							"                    language: 'json'",
+							"                }",
+							"            }",
+							"        });",
+							"    }",
+							"}"
+						]
+					}
+				}
+			],
+			"item": [
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
 								":id"
 							],
 							"variable": [
@@ -110,17 +283,86 @@
 					"response": []
 				},
 				{
-					"name": "Conversation",
+					"name": "Create User",
 					"request": {
-						"method": "DELETE",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{BASE_URL}}/conversations/:id",
+							"raw": "{{BASE_URL}}/users",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"conversations",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"updated@email.com\",\n  \"password\": \"passwordUpdate\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
 								":id"
 							],
 							"variable": [
@@ -136,37 +378,43 @@
 			]
 		},
 		{
-			"name": "Users",
+			"name": "Conversations",
 			"item": [
 				{
-					"name": "Users",
+					"name": "Get Conversations",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users",
+							"raw": "{{BASE_URL}}/conversations?userId=",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users"
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": ""
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Users",
+					"name": "Get Conversation",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
@@ -180,13 +428,18 @@
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Create Conversation",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"password123\" \r\n}",
+							"raw": "{\n  \"user\": {\n    \"id\": \"\",\n    \"email\": \"test@email.com\"\n  },\n  \"title\": \"First chat\",\n  \"firstMessage\": {\n    \"content\": \"Hello\",\n    \"sender\": \"USER\"\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -194,25 +447,30 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/users",
+							"raw": "{{BASE_URL}}/conversations",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users"
+								"conversations"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Update Conversation",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"updated@email.com\",\r\n    \"password\": \"passwordUpdate\" \r\n}",
+							"raw": "{\n  \"title\": \"Updated chat\",\n  \"messages\": [\n    {\n      \"content\": \"Hi again\",\n      \"sender\": \"USER\"\n    },\n    {\n      \"content\": \"Updated message\",\n      \"sender\": \"ASSISTANT\"\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -220,12 +478,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
@@ -239,17 +497,17 @@
 					"response": []
 				},
 				{
-					"name": "User",
+					"name": "Delete Conversation",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/users/:id",
+							"raw": "{{BASE_URL}}/conversations/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"users",
+								"conversations",
 								":id"
 							],
 							"variable": [
@@ -268,7 +526,7 @@
 			"name": "Messages",
 			"item": [
 				{
-					"name": "Messages",
+					"name": "Get Messages",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -284,7 +542,7 @@
 							],
 							"variable": [
 								{
-									"conversationId": "id",
+									"key": "conversationId",
 									"value": ""
 								}
 							]
@@ -293,7 +551,7 @@
 					"response": []
 				},
 				{
-					"name": "Message",
+					"name": "Get Message",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -310,11 +568,10 @@
 							],
 							"variable": [
 								{
-									"conversationId": "id",
+									"key": "conversationId",
 									"value": ""
 								},
 								{
-									
 									"key": "id",
 									"value": ""
 								}
@@ -324,13 +581,18 @@
 					"response": []
 				},
 				{
-					"name": "Message",
+					"name": "Create Message",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"content\": \"A New Message\",\r\n    \"sender\": \"USER\" \r\n}",
+							"raw": "{\n  \"content\": \"A New Message\",\n  \"sender\": \"USER\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -349,7 +611,7 @@
 							],
 							"variable": [
 								{
-									"conversationId": "id",
+									"key": "conversationId",
 									"value": ""
 								}
 							]
@@ -358,13 +620,18 @@
 					"response": []
 				},
 				{
-					"name": "Conversation",
+					"name": "Update Message",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"content\": \"Edited Message\"\r\n}",
+							"raw": "{\n  \"content\": \"Edited Message\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -384,11 +651,10 @@
 							],
 							"variable": [
 								{
-									"conversationId": "id",
+									"key": "conversationId",
 									"value": ""
 								},
 								{
-									
 									"key": "id",
 									"value": ""
 								}
@@ -398,7 +664,7 @@
 					"response": []
 				},
 				{
-					"name": "Message",
+					"name": "Delete Message",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -415,11 +681,10 @@
 							],
 							"variable": [
 								{
-									"conversationId": "id",
+									"key": "conversationId",
 									"value": ""
 								},
 								{
-									
 									"key": "id",
 									"value": ""
 								}
@@ -455,6 +720,16 @@
 		{
 			"key": "BASE_URL",
 			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": "",
 			"type": "string"
 		}
 	]
