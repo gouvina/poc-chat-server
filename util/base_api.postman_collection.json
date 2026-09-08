@@ -386,15 +386,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/conversations/user/:userId",
+							"raw": "{{BASE_URL}}/conversations?userId=",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"conversations",
-								":userId"
+								"conversations"
 							],
-							"variable": [
+							"query": [
 								{
 									"key": "userId",
 									"value": ""

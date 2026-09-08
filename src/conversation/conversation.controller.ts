@@ -6,7 +6,8 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  Post
+  Post,
+  Query
 } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
@@ -22,14 +23,13 @@ export class ConversationController {
     return this.conversationService.createConversation(dto);
   }
 
-  @Get('user/:userId')
-  async getConversations(@Param('userId', ParseUUIDPipe) userId: string): Promise<ConversationDto[]> {
+  @Get()
+  async getConversations(@Query('userId', ParseUUIDPipe) userId: string): Promise<ConversationDto[]> {
     return this.conversationService.getConversations(userId);
   }
 
   @Get(':id')
   async getConversation(@Param('id', ParseUUIDPipe) id: string): Promise<ConversationDto | null> {
-    console.log('Entre a conversation controller')
     return this.conversationService.getConversation(id);
   }
 
