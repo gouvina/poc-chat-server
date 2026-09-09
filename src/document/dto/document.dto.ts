@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsString, ValidateNested } from "class-validator";
-import { RollDto } from "src/rollo/dto/roll.dto";
+import { RollDto } from "src/roll/dto/roll.dto";
 
 export class DocumentDto {
     @IsNumber()

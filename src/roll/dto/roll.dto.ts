@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateRollDto {
+export class RollDto {
 
     @IsNumber()
     @IsNotEmpty()

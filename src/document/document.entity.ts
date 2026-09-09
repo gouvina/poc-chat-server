@@ -1,4 +1,4 @@
-import { Roll } from "src/rollo/roll.entity";
+import { Roll } from "src/roll/roll.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 

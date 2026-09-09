@@ -1,4 +1,4 @@
-import { Document } from "src/documento/document.entity";
+import { Document } from "src/document/document.entity";
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 
 @Entity('rolls')
