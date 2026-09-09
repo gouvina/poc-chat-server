@@ -1,25 +1,25 @@
+import { Roll } from "src/models/roll/roll.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { Rollo } from "./rollo.entity";
 
 
-@Entity('documentos')
-export class Documento {
+@Entity('documents')
+export class Document {
     @PrimaryColumn({ type: 'integer' })
     id!: number
 
     @Column({ type: 'integer' })
-    hoja?: number
+    page?: number
 
     @Column({ type: 'integer' })
-    calificacion?: number
+    score?: number
 
     @Column({ type: 'varchar' })
     version?: string
 
     @Column({ type: 'varchar'})
-    texto?: string
+    text?: string
 
-    @ManyToOne(() => Rollo, (rollo) => rollo.documentos, {onDelete: 'CASCADE'})
-    @JoinColumn({ name: 'rolloId'})
-    rollo!: Rollo
+    @ManyToOne(() => Roll, (roll) => roll.documents, {onDelete: 'CASCADE'})
+    @JoinColumn({ name: 'rollId'})
+    roll!: Roll
 }

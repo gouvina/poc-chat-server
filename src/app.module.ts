@@ -7,8 +7,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from './models/user/user.module';
 import { ConversationModule } from './models/conversation/conversation.module';
 import { MessageModule } from './models/message/message.module';
-import { RolloModule } from './models/rollo/rollo.module';
-import { DocumentoModule } from './models/documento/documento.module';
+import { RollModule } from './models/roll/roll.module';
+import { DocumentModule } from './models/document/document.module';
 
 @Module({
   imports: [
@@ -37,8 +37,8 @@ import { DocumentoModule } from './models/documento/documento.module';
     UserModule,
     ConversationModule,
     MessageModule,
-    RolloModule,
-    DocumentoModule,
+    RollModule,
+    DocumentModule,
   ],
   providers: [
     {

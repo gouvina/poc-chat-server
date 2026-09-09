@@ -1,25 +1,25 @@
 import { Type } from "class-transformer"
 import { IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator"
-import { RolloDto } from "src/models/rollo/dto/rollo.dto"
+import { RollDto } from "src/models/roll/dto/roll.dto"
 
-export class CreateDocumentoDto {
+export class CreateDocumentDto {
     @IsNumber()
     @IsNotEmpty()
     id!: number
 
     @IsNumber()
-    hoja?: number
+    page?: number
 
     @IsNumber()
-    calificacion?: number
+    score?: number
 
     @IsString()
     version?: string
 
     @IsString()
-    texto?: string
+    text?: string
 
     @ValidateNested()
-    @Type(() => RolloDto)
-    rollo!: RolloDto
+    @Type(() => RollDto)
+    roll!: RollDto
 }
