@@ -696,37 +696,37 @@
 			]
 		},
 		{
-			"name": "Rollos",
+			"name": "Rolls",
 			"item": [
 				{
-					"name": "Get Rollos",
+					"name": "Get Rolls",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/rollos",
+							"raw": "{{BASE_URL}}/rolls",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"rollos"
+								"rolls"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Rollo",
+					"name": "Get Roll",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/rollos/:id",
+							"raw": "{{BASE_URL}}/rolls/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"rollos",
+								"rolls",
 								":id"
 							],
 							"variable": [
@@ -740,7 +740,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Rollo",
+					"name": "Create Roll",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -751,7 +751,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 1,\n  \"nombre\": \"documentos-1997\",\n  \"cantidad_documentos\": 1\n}",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"documents-1997\",\n  \"number_documents\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -759,12 +759,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/rollos",
+							"raw": "{{BASE_URL}}/rolls",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"rollos"
+								"rolls"
 							]
 						}
 					},
@@ -773,37 +773,37 @@
 			]
 		},
 		{
-			"name": "Documentos",
+			"name": "Documents",
 			"item": [
 				{
-					"name": "Get Documentos",
+					"name": "Get Documents",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/documentos",
+							"raw": "{{BASE_URL}}/documents",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"documentos"
+								"documents"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Documentos Filtered",
+					"name": "Get Documents Filtered",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/documentos?version=v1&rollo=1",
+							"raw": "{{BASE_URL}}/documents?version=v1&roll=1",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"documentos"
+								"documents"
 							],
 							"query": [
 								{
@@ -811,7 +811,7 @@
 									"value": "v1"
 								},
 								{
-									"key": "rollo",
+									"key": "roll",
 									"value": "1"
 								}
 							]
@@ -820,17 +820,17 @@
 					"response": []
 				},
 				{
-					"name": "Get Documento",
+					"name": "Get Document",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/documentos/:id",
+							"raw": "{{BASE_URL}}/documents/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"documentos",
+								"documents",
 								":id"
 							],
 							"variable": [
@@ -844,7 +844,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Documento",
+					"name": "Create Document",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -855,7 +855,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 1,\n  \"hoja\": 1,\n  \"calificacion\": 5,\n  \"version\": \"v1\",\n  \"texto\": \"documento de prueba\",\n  \"rollo\": {\n  \"id\": 1,\n  \"nombre\": \"documentos-1997\",\n \"cantidad_documentos\": 1\n  }\n}",
+							"raw": "{\n  \"id\": 1,\n  \"page\": 1,\n  \"score\": 5,\n  \"version\": \"v1\",\n  \"text\": \"document de prueba\",\n  \"roll\": {\n  \"id\": 1,\n  \"name\": \"documents-1997\",\n \"number_documents\": 1\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -863,12 +863,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/documentos",
+							"raw": "{{BASE_URL}}/documents",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"documentos"
+								"documents"
 							]
 
 						}

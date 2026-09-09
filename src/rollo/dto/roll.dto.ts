@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateRolloDto {
+export class RollDto {
 
     @IsNumber()
     @IsNotEmpty()
     id!: number
 
     @IsString()
-    nombre?: string
+    name?: string
 
     @IsNumber()
-    cantidad_documentos!: number
+    number_documents!: number
 }

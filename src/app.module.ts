@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { RolloModule } from './rollo/rollo.module';
-import { DocumentoModule } from './documento/documento.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from './/user/user.module';
 import { ConversationModule } from './/conversation/conversation.module';
 import { MessageModule } from './/message/message.module';
+import { RollModule } from './rollo/roll.module';
+import { DocumentModule } from './documento/document.module';
 
 @Module({
   imports: [
@@ -37,8 +37,8 @@ import { MessageModule } from './/message/message.module';
     UserModule,
     ConversationModule,
     MessageModule,
-    RolloModule,
-    DocumentoModule,
+    RollModule,
+    DocumentModule,
   ],
   providers: [
     {
