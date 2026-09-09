@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { RolloModule } from './rollo/rollo.module';
-import { DocumentoModule } from './documento/documento,module';
+import { DocumentoModule } from './documento/documento.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from './/user/user.module';

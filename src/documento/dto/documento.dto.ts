@@ -1,4 +1,5 @@
-import { IsNumber, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNumber, IsString, ValidateNested } from "class-validator";
 import { RolloDto } from "src/rollo/dto/rollo.dto";
 
 export class DocumentoDto {
@@ -17,5 +18,7 @@ export class DocumentoDto {
     @IsString()
     texto?: string
 
+    @ValidateNested()
+    @Type(() => RolloDto)
     rollo!: RolloDto
 }
