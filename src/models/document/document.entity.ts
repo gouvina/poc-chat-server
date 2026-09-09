@@ -1,5 +1,5 @@
+import { Roll } from "src/entities/roll.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { Roll } from "../roll/roll.entity";
 
 
 @Entity('documents')

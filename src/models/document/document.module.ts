@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Document } from "./document.entity";
 import { DocumentController } from "./document.controller";
 import { DocumentService } from "./document.service";
-import { Roll } from "../roll/roll.entity";
+import { Roll } from "src/entities/roll.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Document, Roll])],
