@@ -10,7 +10,7 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
 import { plainToInstance } from 'class-transformer';
-import { hashPassword } from './password.util';
+import { hashPassword } from 'src/utils/hash.util';
 
 @Injectable()
 export class UserService {
@@ -19,49 +19,23 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  private async assertUniqueEmailAndUsername(
-    email: string,
-    username: string,
-    excludeUserId?: string,
-  ): Promise<void> {
-    const [existingEmail, existingUsername] = await Promise.all([
-      this.userRepository.findOne({ where: { email } }),
-      this.userRepository.findOne({ where: { username } }),
-    ]);
-
-    if (existingEmail && existingEmail.id !== excludeUserId) {
-      throw new ConflictException('Email is already in use');
-    }
-
-    if (existingUsername && existingUsername.id !== excludeUserId) {
-      throw new ConflictException('Username is already in use');
-    }
-  }
-
   async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
-    await this.assertUniqueEmailAndUsername(
-      createUserDto.email,
-      createUserDto.username,
-    );
+    const existingUser = await this.userRepository.findOne({ where: { email: createUserDto.email }})
 
-    const row = this.userRepository.create({
-      username: createUserDto.username,
+    if (existingUser) { throw new ConflictException('Email is already in use') }
+
+    const user = await this.userRepository.save({
       email: createUserDto.email,
       password: await hashPassword(Buffer.from(createUserDto.password, 'base64').toString('utf-8')),
     });
-    const user = await this.userRepository.save(row);
 
-    const userDto = plainToInstance(UserDto, user);
-
-    return userDto;
+    return plainToInstance(UserDto, user);
   }
 
   async getUsers(): Promise<UserDto[]> {
     const users = await this.userRepository.find({ order: { createdAt: 'ASC' } });
 
-    const usersDto = users.map((user) => plainToInstance(UserDto, user));
-
-    return usersDto;
+    return plainToInstance(UserDto, users)
   }
 
   async getUser(id: string): Promise<UserDto | null> {
@@ -69,17 +43,14 @@ export class UserService {
 
     if (!user) throw new NotFoundException();
 
-    const userDto = plainToInstance(UserDto, user);
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 
-  async findByEmailOrUsername(identifier: string): Promise<User | null> {
-    const trimmed = identifier.trim();
-    const normalizedEmail = trimmed.toLowerCase();
+  async findByEmail(email: string): Promise<User | null> {
+    const formattedEmail = email.trim().toLowerCase();
 
     return this.userRepository.findOne({
-      where: [{ email: normalizedEmail }, { username: trimmed }],
+      where: [{ email: formattedEmail }],
     });
   }
 
@@ -91,21 +62,19 @@ export class UserService {
 
     if (!existing) throw new NotFoundException();
 
-    const nextEmail = updateUserDto.email ?? existing.email;
-    const nextUsername = updateUserDto.username ?? existing.username;
+    const emailInUse = await this.userRepository.findOne({ where: { email: updateUserDto.email }})
 
-    await this.assertUniqueEmailAndUsername(nextEmail, nextUsername, id);
+    if (emailInUse && emailInUse.id !== existing.id) { throw new ConflictException('Email is already in use')}
 
-    existing.email = nextEmail;
-    existing.username = nextUsername;
+    existing.email = updateUserDto.email ?? existing.email;
+
     if (updateUserDto.password) {
       existing.password = await hashPassword(Buffer.from(updateUserDto.password, 'base64').toString('utf-8'));
     }
+    
     const user = await this.userRepository.save(existing);
 
-    const userDto = plainToInstance(UserDto, user);
-
-    return userDto;
+    return plainToInstance(UserDto, user)
   }
 
   async deleteUser(id: string): Promise<UserDto | null> {
@@ -113,10 +82,8 @@ export class UserService {
 
     if (!existing) throw new NotFoundException();
 
-    const user = await this.userRepository.remove(existing);
-
-    const userDto = plainToInstance(UserDto, user);
-
-    return userDto;
+    const user = await this.userRepository.remove(existing)
+    
+    return plainToInstance(UserDto, user)
   }
 }

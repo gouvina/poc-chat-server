@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConversationModule } from './conversation/conversation.module';
-import { UserModule } from './user/user.module';
-import { MessageModule } from './message/message.module';
 import { AuthModule } from './auth/auth.module';
 import { RolloModule } from './rollo/rollo.module';
 import { DocumentoModule } from './documento/documento,module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { UserModule } from './/user/user.module';
+import { ConversationModule } from './/conversation/conversation.module';
+import { MessageModule } from './/message/message.module';
 
 @Module({
   imports: [
@@ -31,12 +33,18 @@ import { DocumentoModule } from './documento/documento,module';
           config.get<string>('DATABASE_LOGGING') === 'true',
       }),
     }),
-    ConversationModule,
-    UserModule,
-    MessageModule,
     AuthModule,
+    UserModule,
+    ConversationModule,
+    MessageModule,
     RolloModule,
-    DocumentoModule
+    DocumentoModule,
   ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard
+    }
+  ]
 })
 export class AppModule {}

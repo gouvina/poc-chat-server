@@ -6,41 +6,27 @@ import { Conversation } from './conversation.entity';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
-import { Message } from 'src/message/message.entity';
-import { DataSource } from 'typeorm'
 
 @Injectable()
 export class ConversationService {
   constructor(
-    private readonly dataSource: DataSource,
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
-    @InjectRepository(Message)
-    private readonly messageRepository: Repository<Message>,
   ) {}
  
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
-    const conversation = await this.dataSource.transaction(async manager => {
-      const conversation = await manager.create(Conversation, {
-        user: dto.user,
-        title: dto.title,
-      });
-
-      await manager.save(conversation)
+    const conversation = await this.conversationRepository.save({
+      user: dto.user,
+      title: dto.title,
+      messages: [
+        {
+          content: dto.firstMessage?.content,
+          sender: dto.firstMessage?.sender
+        }
+      ]
+    })
   
-      const message = manager.create(Message, {
-        conversation,
-        content: dto.firstMessage?.content,
-        sender: dto.firstMessage?.sender,
-      });
-
-      await manager.save(message)
-  
-      return conversation;
-    });
-  
-    const conversationDto = plainToInstance(ConversationDto, conversation);
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation);
   }
   
   async getConversations(userId: string): Promise<ConversationDto[]> {
@@ -49,19 +35,20 @@ export class ConversationService {
       order: { createdAt: 'ASC' } 
     });
 
-    const conversationsDto = conversations.map(conversation => plainToInstance(ConversationDto, conversation))
-  
-    return conversationsDto;
+    return plainToInstance(ConversationDto, conversations)
   }
   
   async getConversation(id: string): Promise<ConversationDto | null> {
-    const conversation = await this.conversationRepository.findOne({ where: { id } });
+    const conversation = await this.conversationRepository.findOne({ 
+      where: { id }, 
+      relations: { 
+        messages: true
+      } 
+    });
 
-    if (!conversation) throw new NotFoundException()
+    if (!conversation) { throw new NotFoundException() }
 
-    const conversationDto = plainToInstance(ConversationDto, conversation)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation)
   }
 
   async updateConversation(
@@ -73,13 +60,11 @@ export class ConversationService {
     });
 
     if (!existing) throw new NotFoundException()
+      
     existing.title = dto.title ?? existing.title;
-    existing.messages = dto.messages ? dto.messages.map(message => this.messageRepository.create({...message})) : existing.messages;
     const conversation = await this.conversationRepository.save(existing);
 
-    const conversationDto = plainToInstance(ConversationDto, conversation)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, conversation)
   }
 
   async deleteConversation(id: string): Promise<ConversationDto | null> {
@@ -89,8 +74,6 @@ export class ConversationService {
     if (!existing) throw new NotFoundException()
     await this.conversationRepository.remove(existing);
 
-    const conversationDto = plainToInstance(ConversationDto, existing)
-  
-    return conversationDto;
+    return plainToInstance(ConversationDto, existing)
   }
 }

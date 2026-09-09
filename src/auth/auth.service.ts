@@ -1,12 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
-import { comparePassword } from 'src/user/password.util';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UserDto } from 'src/user/dto/user.dto';
-import { UserService } from 'src/user/user.service';
-import { AuthResponseDto } from './dto/auth-response.dto';
-import { LoginDto } from './dto/login.dto';
+import { comparePassword } from 'src/utils/hash.util';
+import { CreateUserDto } from 'src//user/dto/create-user.dto';
+import { UserDto } from 'src//user/dto/user.dto';
+import { UserService } from 'src//user/user.service';
+import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { JwtPayload } from './types/jwt-payload.type';
 
 @Injectable()
@@ -16,14 +15,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
+  async register(createUserDto: CreateUserDto): Promise<LoginResponseDto> {
     const user = await this.userService.createUser(createUserDto);
     return this.buildAuthResponse(user);
   }
 
-  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
-    const user = await this.userService.findByEmailOrUsername(
-      loginDto.identifier,
+  async login(loginDto: LoginDto): Promise<LoginResponseDto> {
+    const user = await this.userService.findByEmail(
+      loginDto.email,
     );
 
     if (!user) {
@@ -67,8 +66,7 @@ export class AuthService {
       const accessToken = await this.jwtService.signAsync(
         {
           sub: user.id,
-          email: user.email,
-          username: user.username,
+          email: user.email
         },
         {
           secret: process.env.JWT_ACCESS_SECRET,
@@ -87,12 +85,10 @@ export class AuthService {
   private async generateTokens(user: {
     id: string;
     email: string;
-    username: string;
   }) {
-    const accessPayload: JwtPayload = {
+    const accessPayload = {
       sub: user.id,
-      email: user.email,
-      username: user.username,
+      email: user.email
     };
   
     const refreshPayload = {
@@ -120,8 +116,7 @@ export class AuthService {
   private async buildAuthResponse(user: {
     id: string;
     email: string;
-    username: string;
-  }): Promise<AuthResponseDto> {
+  }): Promise<LoginResponseDto> {
     const tokens = await this.generateTokens(user);
 
     return {

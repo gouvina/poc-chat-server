@@ -75,7 +75,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,7 +126,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"identifier\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,6 +215,31 @@
 		},
 		{
 			"name": "Users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if (pm.request.body?.mode === 'raw') {",
+							"    const body = JSON.parse(pm.request.body.raw);",
+							"    if (body.password) {",
+							"        body.password = btoa(body.password);",
+							"        pm.request.body.update({",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify(body),",
+							"            options: {",
+							"                raw: {",
+							"                    language: 'json'",
+							"                }",
+							"            }",
+							"        });",
+							"    }",
+							"}"
+						]
+					}
+				}
+			],
 			"item": [
 				{
 					"name": "Get Users",
@@ -269,7 +294,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -300,7 +325,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"updateduser\",\n  \"email\": \"updated@email.com\",\n  \"password\": \"passwordUpdate\"\n}",
+							"raw": "{\n  \"email\": \"updated@email.com\",\n  \"password\": \"passwordUpdate\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -361,15 +386,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/conversations/:userId",
+							"raw": "{{BASE_URL}}/conversations?userId=",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"conversations",
-								":userId"
+								"conversations"
 							],
-							"variable": [
+							"query": [
 								{
 									"key": "userId",
 									"value": ""
@@ -415,7 +439,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"user\": {\n    \"id\": \"\",\n    \"username\": \"testuser\",\n    \"email\": \"test@email.com\"\n  },\n  \"title\": \"First chat\",\n  \"firstMessage\": {\n    \"content\": \"Hello\",\n    \"sender\": \"USER\"\n  }\n}",
+							"raw": "{\n  \"user\": {\n    \"id\": \"\",\n    \"email\": \"test@email.com\"\n  },\n  \"title\": \"First chat\",\n  \"firstMessage\": {\n    \"content\": \"Hello\",\n    \"sender\": \"USER\"\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
