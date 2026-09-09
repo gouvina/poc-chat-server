@@ -1,5 +1,5 @@
-import { Document } from "src/document/document.entity";
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Document } from "./document.entity";
 
 @Entity('rolls')
 export class Roll {

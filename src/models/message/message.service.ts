@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Message } from "./message.entity";
 import { Repository } from "typeorm";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { MessageDto } from "./dto/message.dto";
 import { plainToInstance } from "class-transformer";
 import { UpdateMessageDto } from "./dto/update-message.dto";
-import { ConversationService } from "src//conversation/conversation.service";
+import { Message } from "src/entities/message.entity";
+import { ConversationService } from "../conversation/conversation.service";
 
 @Injectable()
 export class MessageService {

@@ -1,7 +1,7 @@
-import { BaseEntity } from "src/baseEntity/base.entity";
-import { SenderType } from "./enum/sender-type.enum";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { Conversation } from "src/conversation/conversation.entity";
+import { BaseEntity } from "./base.entity";
+import { SenderType } from "src/models/message/enum/sender-type.enum";
+import { Conversation } from "./conversation.entity";
 
 
 @Entity('messages')
