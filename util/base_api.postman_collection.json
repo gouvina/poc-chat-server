@@ -694,6 +694,188 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Rolls",
+			"item": [
+				{
+					"name": "Get Rolls",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/rolls",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rolls"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/rolls/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rolls",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Roll",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"documents-1997\",\n  \"number_documents\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/rolls",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"rolls"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": [
+				{
+					"name": "Get Documents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documents",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Documents Filtered",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documents?version=v1&rollId=1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documents"
+							],
+							"query": [
+								{
+									"key": "version",
+									"value": "v1"
+								},
+								{
+									"key": "rollId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/documents/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"page\": 1,\n  \"score\": 5,\n  \"version\": \"v1\",\n  \"text\": \"document de prueba\",\n  \"roll\": {\n    \"id\": 1,\n    \"name\": \"documents-1997\",\n    \"number_documents\": 1\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/documents",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"documents"
+							]
+
+						}
+					},
+					"response": {}
+				}
+			]
 		}
 	],
 	"event": [
