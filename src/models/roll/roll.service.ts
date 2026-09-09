@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { Roll } from "./roll.entity";
+import { Roll } from "src/entities/roll.entity";
 import { RollDto } from "./dto/roll.dto";
 import { plainToInstance } from "class-transformer";
 import { CreateRollDto } from "./dto/create-roll.dto";
