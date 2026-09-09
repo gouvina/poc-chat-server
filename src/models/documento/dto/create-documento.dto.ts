@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { Type } from "class-transformer"
+import { IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator"
 import { RolloDto } from "src/models/rollo/dto/rollo.dto"
 
 export class CreateDocumentoDto {
@@ -18,6 +19,7 @@ export class CreateDocumentoDto {
     @IsString()
     texto?: string
 
-    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => RolloDto)
     rollo!: RolloDto
 }

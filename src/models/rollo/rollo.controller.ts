@@ -1,10 +1,8 @@
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { RolloService } from "./rollo.service";
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, } from "@nestjs/common";
 import { RolloDto } from "./dto/rollo.dto";
 import { CreateRolloDto } from "./dto/create-rollo.dto";
 
-@UseGuards(JwtAuthGuard)
 @Controller('rollos')
 export class RolloController {
     constructor(private readonly rolloService: RolloService) {}

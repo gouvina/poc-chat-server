@@ -8,7 +8,7 @@ import { UserModule } from './models/user/user.module';
 import { ConversationModule } from './models/conversation/conversation.module';
 import { MessageModule } from './models/message/message.module';
 import { RolloModule } from './models/rollo/rollo.module';
-import { DocumentoModule } from './models/documento/documento,module';
+import { DocumentoModule } from './models/documento/documento.module';
 
 @Module({
   imports: [
