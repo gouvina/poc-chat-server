@@ -14,6 +14,5 @@ export class Message extends BaseEntity {
     sender!: SenderType
 
     @ManyToOne(() => Conversation, (conversation) => conversation.messages, {onDelete: 'CASCADE'})
-    @JoinColumn({name: 'conversationId'})
     conversation!: Conversation
 }
