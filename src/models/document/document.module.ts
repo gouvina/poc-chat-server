@@ -7,6 +7,7 @@ import { Roll } from "src/entities/roll.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Document, Roll])],
+    exports: [DocumentService],
     controllers: [DocumentController],
     providers: [DocumentService],
 })

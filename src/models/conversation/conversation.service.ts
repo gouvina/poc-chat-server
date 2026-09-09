@@ -71,7 +71,9 @@ export class ConversationService {
     const existing = await this.conversationRepository.findOne({
       where: { id },
     });
-    if (!existing) throw new NotFoundException()
+
+    if (!existing) { throw new NotFoundException() }
+      
     await this.conversationRepository.remove(existing);
 
     return plainToInstance(ConversationDto, existing)
