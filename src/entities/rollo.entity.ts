@@ -1,5 +1,5 @@
-import { Documento } from "src/documento/documento.entity";
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Documento } from "./documento.entity";
 
 @Entity('rollos')
 export class Rollo {

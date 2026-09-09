@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Documento } from "./documento.entity";
-import { Rollo } from "src/rollo/rollo.entity";
 import { DocumentoController } from "./documento.controller";
 import { DocumentoService } from "./documento.service";
+import { Documento } from "src/entities/documento.entity";
+import { Rollo } from "src/entities/rollo.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Documento, Rollo])],

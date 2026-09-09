@@ -1,8 +1,9 @@
-import { IsNumber, IsString } from "class-validator";
-import { RolloDto } from "src/rollo/dto/rollo.dto";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { RolloDto } from "src/models/rollo/dto/rollo.dto"
 
-export class DocumentoDto {
+export class CreateDocumentoDto {
     @IsNumber()
+    @IsNotEmpty()
     id!: number
 
     @IsNumber()
@@ -17,5 +18,6 @@ export class DocumentoDto {
     @IsString()
     texto?: string
 
+    @IsNotEmpty()
     rollo!: RolloDto
 }

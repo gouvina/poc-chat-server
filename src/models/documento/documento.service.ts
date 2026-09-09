@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, Query } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { Documento } from "./documento.entity";
 import { DocumentoDto } from "./dto/documento.dto";
 import { CreateDocumentoDto } from "./dto/create-documento.dto"
 import { plainToInstance } from "class-transformer";
+import { Documento } from "src/entities/documento.entity";
 
 @Injectable()
 export class DocumentoService {

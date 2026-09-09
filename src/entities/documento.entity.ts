@@ -1,5 +1,5 @@
-import { Rollo } from "src/rollo/rollo.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Rollo } from "./rollo.entity";
 
 
 @Entity('documentos')

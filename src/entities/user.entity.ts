@@ -1,6 +1,6 @@
-import { BaseEntity } from "src/baseEntity/base.entity";
-import { Conversation } from "src//conversation/conversation.entity";
 import { Column, Entity, OneToMany } from "typeorm";
+import { BaseEntity } from "./base.entity";
+import { Conversation } from "./conversation.entity";
 
 @Entity('users')
 export class User extends BaseEntity {
