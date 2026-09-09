@@ -20,6 +20,5 @@ export class Document {
     text?: string
 
     @ManyToOne(() => Roll, (roll) => roll.documents, {onDelete: 'CASCADE'})
-    @JoinColumn({ name: 'rollId'})
     roll!: Roll
 }
