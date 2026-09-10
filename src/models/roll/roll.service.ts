@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
 import { Roll } from "./roll.entity";
@@ -29,16 +29,14 @@ export class RollService {
     }
 
     async createRoll(dto: CreateRollDto): Promise<RollDto> {
-        const roll = await this.dataSource.transaction(async manager => {
-            const roll = await manager.create(Roll, {
-                id: dto.id,
-                name: dto.name,
-                number_documents: dto.number_documents,
-            })
+        const existingRoll = await this.rollRepository.findOne({ where: { id: dto.id }})
 
-            await manager.save(roll)
-
-            return roll
+        if (existingRoll) { throw new ConflictException('A roll with this Id already exists')}
+        
+        const roll = await this.rollRepository.save({
+            id: dto.id,
+            name: dto.name,
+            number_documents: dto.number_documents
         })
 
         return plainToInstance(RollDto, roll)
