@@ -798,7 +798,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/documents?version=v1&roll=1",
+							"raw": "{{BASE_URL}}/documents?version=v1&rollId=1",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -811,7 +811,7 @@
 									"value": "v1"
 								},
 								{
-									"key": "roll",
+									"key": "rollId",
 									"value": "1"
 								}
 							]
@@ -855,7 +855,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 1,\n  \"page\": 1,\n  \"score\": 5,\n  \"version\": \"v1\",\n  \"text\": \"document de prueba\",\n  \"roll\": {\n  \"id\": 1,\n  \"name\": \"documents-1997\",\n \"number_documents\": 1\n  }\n}",
+							"raw": "{\n  \"id\": 1,\n  \"page\": 1,\n  \"score\": 5,\n  \"version\": \"v1\",\n  \"text\": \"document de prueba\",\n  \"roll\": {\n    \"id\": 1,\n    \"name\": \"documents-1997\",\n    \"number_documents\": 1\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
