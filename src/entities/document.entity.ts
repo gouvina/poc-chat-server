@@ -1,6 +1,6 @@
-import { Roll } from "src/models/roll/roll.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { Query } from "./query.entity";
+import { Roll } from "./roll.entity";
 
 
 @Entity('documents')
@@ -21,9 +21,9 @@ export class Document {
     text?: string
 
     @ManyToOne(() => Roll, (roll) => roll.documents, {onDelete: 'CASCADE'})
-    @JoinColumn({ name: 'rollId'})
     roll!: Roll
 
     @ManyToMany(() => Query, (query) => query.documents)
+    @JoinTable()
     queries?: Query[]
 }

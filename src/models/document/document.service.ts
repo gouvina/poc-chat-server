@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException, Query } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { Document } from "./document.entity";
+import { Document } from "src/entities/document.entity";
 import { DocumentDto } from "./dto/document.dto";
 import { CreateDocumentDto } from "./dto/create-document.dto"
 import { plainToInstance } from "class-transformer";
