@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Query } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, Query } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
 import { Document } from "./document.entity";
@@ -21,7 +21,7 @@ export class DocumentService {
         const documents = await this.documentRepository.find({
             where: {
                 ...(version !== undefined && { version }),
-                ...(rollId !== undefined && { rollId }),
+                ...(rollId !== undefined && { roll: { id: rollId} }),
             }
         })
 
@@ -37,19 +37,17 @@ export class DocumentService {
     }
 
     async createDocument(dto: CreateDocumentDto): Promise<DocumentDto> {
-        const document = await this.dataSource.transaction(async manager => {
-            const document = await manager.create(Document, {
-                id: dto.id,
-                page: dto.page,
-                score: dto.score,
-                version: dto.version,
-                text: dto.text,
-                roll: dto.roll,
-            })
+        const existingDocument = await this.documentRepository.findOne({ where: { id: dto.id }})
 
-            await manager.save(document)
+        if (existingDocument) { throw new ConflictException('A document with this Id already exists')}
 
-            return document
+        const document = await this.documentRepository.save({
+            id: dto.id,
+            page: dto.page,
+            score: dto.score,
+            version: dto.version,
+            text: dto.text,
+            roll: dto.roll,
         })
 
         return plainToInstance(DocumentDto, document)
