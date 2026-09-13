@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { UserDto } from 'src//user/dto/user.dto';
+import { UserDto } from 'src/models/user/dto/user.dto';
 
 export class LoginDto {
   @IsEmail()

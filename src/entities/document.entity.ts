@@ -1,5 +1,5 @@
-import { Roll } from "src/roll/roll.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Roll } from "./roll.entity";
 
 
 @Entity('documents')
@@ -19,6 +19,7 @@ export class Document {
     @Column({ type: 'varchar' })
     text?: string
 
-    @ManyToOne(() => Roll, (roll) => roll.documents, {onDelete: 'CASCADE'})
+    @ManyToOne(() => Roll, (roll) => roll.documents, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'rollId' })
     roll!: Roll
 }

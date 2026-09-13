@@ -4,11 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { ConversationModule } from './conversation/conversation.module';
-import { DocumentModule } from './document/document.module';
-import { MessageModule } from './message/message.module';
-import { RollModule } from './roll/roll.module';
-import { UserModule } from './user/user.module';
+import { ConversationModule } from './models/conversation/conversation.module';
+import { MessageModule } from './models/message/message.module';
+import { UserModule } from './models/user/user.module';
+import { RollModule } from './models/roll/roll.module';
+import { DocumentModule } from './models/document/document.module';
 
 @Module({
   imports: [

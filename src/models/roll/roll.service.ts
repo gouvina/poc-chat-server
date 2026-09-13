@@ -1,10 +1,10 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { Roll } from "./roll.entity";
 import { RollDto } from "./dto/roll.dto";
 import { plainToInstance } from "class-transformer";
 import { CreateRollDto } from "./dto/create-roll.dto";
+import { Roll } from "src/entities/roll.entity";
 
 @Injectable()
 export class RollService {
@@ -12,7 +12,7 @@ export class RollService {
         private readonly dataSource: DataSource,
         @InjectRepository(Roll)
         private readonly rollRepository: Repository<Roll>
-    ) {}
+    ) { }
 
     async getRolls(): Promise<RollDto[]> {
         const rolls = await this.rollRepository.find()
@@ -21,7 +21,7 @@ export class RollService {
     }
 
     async getRoll(id: number): Promise<RollDto | null> {
-        const roll = await this.rollRepository.findOne({ where: { id }})
+        const roll = await this.rollRepository.findOne({ where: { id } })
 
         if (!roll) throw new NotFoundException()
 
@@ -29,10 +29,10 @@ export class RollService {
     }
 
     async createRoll(dto: CreateRollDto): Promise<RollDto> {
-        const existingRoll = await this.rollRepository.findOne({ where: { id: dto.id }})
+        const existingRoll = await this.rollRepository.findOne({ where: { id: dto.id } })
 
-        if (existingRoll) { throw new ConflictException('A roll with this Id already exists')}
-        
+        if (existingRoll) { throw new ConflictException('A roll with this Id already exists') }
+
         const roll = await this.rollRepository.save({
             id: dto.id,
             name: dto.name,

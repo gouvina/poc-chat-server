@@ -9,9 +9,9 @@ import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { RefreshTokenDto, RefreshResponseDto } from './dto/refresh.dto';
 import { AuthenticatedRequest } from './types/authenticated-request.type';
-import { CreateUserDto } from 'src//user/dto/create-user.dto';
-import { UserDto } from 'src//user/dto/user.dto';
 import { Public } from './auth.constants';
+import { CreateUserDto } from 'src/models/user/dto/create-user.dto';
+import { UserDto } from 'src/models/user/dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
