@@ -9,6 +9,7 @@ import { MessageModule } from './models/message/message.module';
 import { UserModule } from './models/user/user.module';
 import { RollModule } from './models/roll/roll.module';
 import { DocumentModule } from './models/document/document.module';
+import { QueryModule } from './models/query/query.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DocumentModule } from './models/document/document.module';
     MessageModule,
     RollModule,
     DocumentModule,
+    QueryModule,
   ],
   providers: [
     {

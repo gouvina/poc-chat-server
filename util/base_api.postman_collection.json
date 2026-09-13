@@ -876,6 +876,113 @@
 					"response": {}
 				}
 			]
+		},
+		{
+			"name": "Queries",
+			"item": [
+				{
+					"name": "Get Queries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/queries?userId=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"queries"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/queries/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"queries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"test query\",\n  \"user\": {\n    \"id\": \"\",\n    \"email\": \"test@email.com\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/queries",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"queries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Query",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/queries/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"queries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
