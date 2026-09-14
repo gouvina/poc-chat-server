@@ -22,6 +22,9 @@ export class DocumentService {
             where: {
                 ...(version !== undefined && { version }),
                 ...(rollId !== undefined && { roll: { id: rollId } }),
+            },
+            relations: {
+                roll: true
             }
         })
 
