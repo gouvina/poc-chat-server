@@ -6,10 +6,10 @@ export class Roll {
     @PrimaryColumn({ type: 'integer' })
     id!: number
 
-    @Column({ type: 'varchar'})
+    @Column({ type: 'varchar' })
     name?: string
 
-    @Column({ type: 'integer'})
+    @Column({ type: 'integer' })
     number_documents!: number
 
     @OneToMany(() => Document, (document) => document.roll)
