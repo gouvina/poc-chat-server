@@ -12,21 +12,21 @@ export class DocumentService {
         private readonly dataSource: DataSource,
         @InjectRepository(Document)
         private readonly documentRepository: Repository<Document>
-    ) {}
+    ) { }
 
     async getDocuments(
-        version?: string, 
+        version?: string,
         rollId?: number
     ): Promise<DocumentDto[]> {
         const documents = await this.documentRepository.find({
             where: {
                 ...(version !== undefined && { version }),
-                ...(rollId !== undefined && { roll: { id: rollId} }),
+                ...(rollId !== undefined && { roll: { id: rollId } }),
             }
         })
 
         return documents.map(document => plainToInstance(DocumentDto, document))
-    } 
+    }
 
     async getDocument(id: number): Promise<DocumentDto | null> {
         const document = await this.documentRepository.findOne({ where: { id } })
@@ -37,9 +37,9 @@ export class DocumentService {
     }
 
     async createDocument(dto: CreateDocumentDto): Promise<DocumentDto> {
-        const existingDocument = await this.documentRepository.findOne({ where: { id: dto.id }})
+        const existingDocument = await this.documentRepository.findOne({ where: { id: dto.id } })
 
-        if (existingDocument) { throw new ConflictException('A document with this Id already exists')}
+        if (existingDocument) { throw new ConflictException('A document with this Id already exists') }
 
         const document = await this.documentRepository.save({
             id: dto.id,

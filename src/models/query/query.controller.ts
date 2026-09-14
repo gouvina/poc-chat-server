@@ -5,7 +5,7 @@ import { QueryService } from "./query.service"
 
 @Controller('queries')
 export class QueryController {
-    constructor(private readonly queryService: QueryService) {}
+    constructor(private readonly queryService: QueryService) { }
 
     @Post()
     async createQuery(@Body() dto: CreateQueryDto): Promise<QueryDto> {
@@ -23,7 +23,7 @@ export class QueryController {
     }
 
     @Delete(':id')
-    async deleteConversation(@Param('id', ParseUUIDPipe) id: string): Promise<QueryDto | null> {
+    async deleteQuery(@Param('id', ParseUUIDPipe) id: string): Promise<QueryDto | null> {
         return this.queryService.deleteQuery(id)
     }
 }

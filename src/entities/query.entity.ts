@@ -5,13 +5,13 @@ import { BaseEntity } from "./base.entity"
 
 @Entity('queries')
 export class Query extends BaseEntity {
-    @Column({type: 'varchar', length: 300})
+    @Column({ type: 'varchar' })
     question!: string
 
-    @Column({type: 'varchar'})
+    @Column({ type: 'varchar' })
     answer!: string
 
-    @ManyToOne(() => User, (user) => user.queries, { onDelete: 'CASCADE'})
+    @ManyToOne(() => User, (user) => user.queries, { onDelete: 'CASCADE' })
     user!: User
 
     @ManyToMany(() => Document, (document) => document.queries)

@@ -17,10 +17,10 @@ export class Document {
     @Column({ type: 'varchar' })
     version?: string
 
-    @Column({ type: 'varchar'})
+    @Column({ type: 'varchar' })
     text?: string
 
-    @ManyToOne(() => Roll, (roll) => roll.documents, {onDelete: 'CASCADE'})
+    @ManyToOne(() => Roll, (roll) => roll.documents, { onDelete: 'CASCADE' })
     roll!: Roll
 
     @ManyToMany(() => Query, (query) => query.documents)

@@ -9,4 +9,4 @@ import { Roll } from "src/entities/roll.entity";
     controllers: [RollController],
     providers: [RollService],
 })
-export class RollModule {}
+export class RollModule { }
