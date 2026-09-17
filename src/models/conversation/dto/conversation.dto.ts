@@ -8,7 +8,7 @@ export class ConversationDto {
     @IsString()
     @IsNotEmpty()
     id!: string;
-    
+
     @IsString()
     @IsNotEmpty()
     title!: string;
@@ -23,4 +23,7 @@ export class ConversationDto {
 
     @IsDate()
     createdAt!: Date;
+
+    @IsDate()
+    updatedAt!: Date
 }

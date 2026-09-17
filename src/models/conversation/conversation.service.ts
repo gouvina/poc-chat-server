@@ -12,8 +12,8 @@ export class ConversationService {
   constructor(
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
-  ) {}
- 
+  ) { }
+
   async createConversation(dto: CreateConversationDto): Promise<ConversationDto> {
     const conversation = await this.conversationRepository.save({
       user: dto.user,
@@ -25,25 +25,25 @@ export class ConversationService {
         }
       ]
     })
-  
+
     return plainToInstance(ConversationDto, conversation);
   }
-  
+
   async getConversations(userId: string): Promise<ConversationDto[]> {
-    const conversations = await this.conversationRepository.find({ 
+    const conversations = await this.conversationRepository.find({
       where: { user: { id: userId } },
-      order: { createdAt: 'ASC' } 
+      order: { createdAt: 'ASC' }
     });
 
     return plainToInstance(ConversationDto, conversations)
   }
-  
+
   async getConversation(id: string): Promise<ConversationDto | null> {
-    const conversation = await this.conversationRepository.findOne({ 
-      where: { id }, 
-      relations: { 
+    const conversation = await this.conversationRepository.findOne({
+      where: { id },
+      relations: {
         messages: true
-      } 
+      }
     });
 
     if (!conversation) { throw new NotFoundException() }
@@ -60,11 +60,19 @@ export class ConversationService {
     });
 
     if (!existing) throw new NotFoundException()
-      
+
     existing.title = dto.title ?? existing.title;
     const conversation = await this.conversationRepository.save(existing);
 
     return plainToInstance(ConversationDto, conversation)
+  }
+
+  async saveConversation(conversation: ConversationDto): Promise<ConversationDto> {
+    conversation.updatedAt = new Date()
+
+    const saved = await this.conversationRepository.save(conversation)
+
+    return plainToInstance(ConversationDto, saved)
   }
 
   async deleteConversation(id: string): Promise<ConversationDto | null> {
@@ -73,7 +81,7 @@ export class ConversationService {
     });
 
     if (!existing) { throw new NotFoundException() }
-      
+
     await this.conversationRepository.remove(existing);
 
     return plainToInstance(ConversationDto, existing)
