@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
 import { DocumentDto } from "src/models/document/dto/document.dto";
 import { UserDto } from "src/models/user/dto/user.dto";
 
@@ -12,6 +12,10 @@ export class QueryDto {
     @IsString()
     @IsNotEmpty()
     question!: string
+
+    @IsArray()
+    @IsString({ each: true })
+    keywords!: string[]
 
     @IsString()
     answer?: string

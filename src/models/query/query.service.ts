@@ -13,7 +13,7 @@ export class QueryService {
         @InjectRepository(Query)
         private readonly queryRepository: Repository<Query>,
         private readonly documentService: DocumentService
-    ) {}
+    ) { }
 
     async createQuery(dto: CreateQueryDto): Promise<QueryDto> {
         const answer = 'Boilerplate answer' // TODO: add code to generate answer
@@ -21,6 +21,7 @@ export class QueryService {
         const query = await this.queryRepository.save({
             user: dto.user,
             question: dto.question,
+            keywords: dto.keywords,
             answer,
             documents
         })
