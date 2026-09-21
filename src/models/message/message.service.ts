@@ -14,25 +14,27 @@ export class MessageService {
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
         private readonly conversationService: ConversationService,
-    ) {}
+    ) { }
 
     async createMessage(conversationId: string, dto: CreateMessageDto): Promise<MessageDto> {
         const conversation = await this.conversationService.getConversation(conversationId)
 
         if (!conversation) throw new NotFoundException()
 
-        const message = this.messageRepository.save({
-            conversation: conversation,
+        const message = await this.messageRepository.save({
+            conversation,
             content: dto.content,
             sender: dto.sender,
         })
+
+        await this.conversationService.updateConversation(conversation.id, conversation)
 
         return plainToInstance(MessageDto, message)
     }
 
     async getMessages(conversationId: string): Promise<MessageDto[]> {
         const conversation = await this.conversationService.getConversation(conversationId)
-        
+
         if (!conversation) throw new NotFoundException()
 
         return plainToInstance(MessageDto, conversation.messages)
@@ -80,12 +82,12 @@ export class MessageService {
 
         if (!conversation) throw new NotFoundException()
 
-        const existing = await this.messageRepository.findOne({where: { id }})
+        const existing = await this.messageRepository.findOne({ where: { id } })
 
         if (!existing || !conversation.messages.find(message => message.id === id)) throw new NotFoundException()
 
         conversation.messages.splice(conversation.messages.indexOf(existing), 1)
-     
+
         await this.messageRepository.remove(existing)
 
         return plainToInstance(MessageDto, existing)
