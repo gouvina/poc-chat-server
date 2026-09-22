@@ -27,7 +27,7 @@ export class MessageService {
             sender: dto.sender,
         })
 
-        await this.conversationService.saveConversation(conversation)
+        await this.conversationService.updateConversation(conversation.id, conversation)
 
         return plainToInstance(MessageDto, message)
     }
