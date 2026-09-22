@@ -62,17 +62,10 @@ export class ConversationService {
     if (!existing) throw new NotFoundException()
 
     existing.title = dto.title ?? existing.title;
+    existing.updatedAt = new Date()
     const conversation = await this.conversationRepository.save(existing);
 
     return plainToInstance(ConversationDto, conversation)
-  }
-
-  async saveConversation(conversation: ConversationDto): Promise<ConversationDto> {
-    conversation.updatedAt = new Date()
-
-    const saved = await this.conversationRepository.save(conversation)
-
-    return plainToInstance(ConversationDto, saved)
   }
 
   async deleteConversation(id: string): Promise<ConversationDto | null> {
