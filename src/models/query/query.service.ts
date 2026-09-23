@@ -53,7 +53,9 @@ export class QueryService {
         const query = await this.queryRepository.findOne({
             where: { id },
             relations: {
-                documents: true
+                documents: {
+                    roll: true
+                }
             }
         })
 
