@@ -8,8 +8,8 @@ export class Query extends BaseEntity {
     @Column({ type: 'varchar' })
     question!: string
 
-    @Column("text", { array: true })
-    keywords!: string[]
+    @Column({ type: 'varchar' })
+    keywords!: string
 
     @Column({ type: 'varchar' })
     answer!: string
