@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
 import { DocumentDto } from "src/models/document/dto/document.dto";
 import { UserDto } from "src/models/user/dto/user.dto";
 
@@ -13,6 +13,10 @@ export class QueryDto {
     @IsNotEmpty()
     question!: string
 
+    @IsArray()
+    @IsString({ each: true })
+    keywords!: string[]
+
     @IsString()
     answer?: string
 
@@ -23,4 +27,10 @@ export class QueryDto {
     @ValidateNested()
     @Type(() => DocumentDto)
     documents?: DocumentDto
+
+    @IsDate()
+    createdAt!: Date;
+
+    @IsDate()
+    updatedAt!: Date
 }

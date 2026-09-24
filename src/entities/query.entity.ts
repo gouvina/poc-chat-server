@@ -9,6 +9,9 @@ export class Query extends BaseEntity {
     question!: string
 
     @Column({ type: 'varchar' })
+    keywords!: string
+
+    @Column({ type: 'varchar' })
     answer!: string
 
     @ManyToOne(() => User, (user) => user.queries, { onDelete: 'CASCADE' })

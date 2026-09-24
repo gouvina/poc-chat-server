@@ -870,7 +870,6 @@
 							"path": [
 								"documents"
 							]
-
 						}
 					},
 					"response": {}
@@ -939,7 +938,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"question\": \"test query\",\n  \"user\": {\n    \"id\": \"\",\n    \"email\": \"test@email.com\"\n  }\n}",
+							"raw": "{\n  \"question\": \"test query\",\n  \"keywords\": [\n    \"keyword 1\",\n    \"keyword 2\"\n  ]\n  \"user\": {\n    \"id\": \"\",\n    \"email\": \"test@email.com\"\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
