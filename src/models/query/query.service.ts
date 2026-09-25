@@ -18,7 +18,11 @@ export class QueryService {
     async createQuery(dto: CreateQueryDto): Promise<QueryDto> {
         const answer = 'Boilerplate answer' // TODO: add code to generate answer
         const documents = await this.documentService.getDocuments() // TODO: add code to search documents for query
-        const keywords = dto.keywords.join(", ")
+
+        const keywords = dto.keywords
+            .map(keyword => keyword.trim())
+            .join(",")
+
         const query = await this.queryRepository.save({
             user: dto.user,
             question: dto.question,
