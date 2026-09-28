@@ -13,19 +13,30 @@ export class QueryService {
         @InjectRepository(Query)
         private readonly queryRepository: Repository<Query>,
         private readonly documentService: DocumentService
-    ) {}
+    ) { }
 
     async createQuery(dto: CreateQueryDto): Promise<QueryDto> {
         const answer = 'Boilerplate answer' // TODO: add code to generate answer
         const documents = await this.documentService.getDocuments() // TODO: add code to search documents for query
+
+        const keywords = dto.keywords
+            .map(keyword => keyword.trim())
+            .join(",")
+
         const query = await this.queryRepository.save({
             user: dto.user,
             question: dto.question,
+            keywords,
             answer,
             documents
         })
 
-        return plainToInstance(QueryDto, query)
+        return plainToInstance(QueryDto, {
+            ...query,
+            keywords: query.keywords
+                ? query.keywords.split(",").map(keyword => keyword.trim())
+                : []
+        })
     }
 
     async getQueries(userId: string): Promise<QueryDto[]> {
@@ -34,20 +45,32 @@ export class QueryService {
             order: { createdAt: 'ASC' }
         })
 
-        return plainToInstance(QueryDto, queries)
+        return queries.map((query) => plainToInstance(QueryDto, {
+            ...query,
+            keywords: query.keywords
+                ? query.keywords.split(",").map(keyword => keyword.trim())
+                : []
+        }))
     }
 
     async getQuery(id: string): Promise<QueryDto | null> {
         const query = await this.queryRepository.findOne({
             where: { id },
             relations: {
-                documents: true
+                documents: {
+                    roll: true
+                }
             }
         })
 
         if (!query) { throw new NotFoundException() }
 
-        return plainToInstance(QueryDto, query)
+        return plainToInstance(QueryDto, {
+            ...query,
+            keywords: query.keywords
+                ? query.keywords.split(",").map(keyword => keyword.trim())
+                : []
+        })
     }
 
     async deleteQuery(id: string): Promise<QueryDto | null> {
@@ -59,6 +82,11 @@ export class QueryService {
 
         await this.queryRepository.remove(existing)
 
-        return plainToInstance(QueryDto, existing)
+        return plainToInstance(QueryDto, {
+            ...existing,
+            keywords: existing.keywords
+                ? existing.keywords.split(",").map(keyword => keyword.trim())
+                : []
+        })
     }
 }

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
+import { IsArray, IsNotEmpty, IsString, ValidateNested } from "class-validator"
 import { UserDto } from "src/models/user/dto/user.dto"
 
 export class CreateQueryDto {
@@ -10,4 +10,8 @@ export class CreateQueryDto {
     @ValidateNested()
     @Type(() => UserDto)
     user!: UserDto
+
+    @IsArray()
+    @IsString({ each: true })
+    keywords!: string[]
 }
