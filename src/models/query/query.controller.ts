@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query
 import { CreateQueryDto } from "./dto/create-query.dto"
 import { QueryDto } from "./dto/query.dto"
 import { QueryService } from "./query.service"
+import { UpdateQueryDto } from "./dto/update-query.dto"
 
 @Controller('queries')
 export class QueryController {
@@ -20,6 +21,11 @@ export class QueryController {
     @Get(':id')
     async getQuery(@Param('id', ParseUUIDPipe) id: string): Promise<QueryDto | null> {
         return this.queryService.getQuery(id)
+    }
+
+    @Patch(':id')
+    async updateQuery(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateQueryDto): Promise<QueryDto | null> {
+        return this.queryService.updateQuery(id, dto)
     }
 
     @Delete(':id')

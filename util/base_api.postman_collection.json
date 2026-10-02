@@ -958,6 +958,44 @@
 					"response": []
 				},
 				{
+					"name": "Update Query",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated query\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/queries/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								":queries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Query",
 					"request": {
 						"method": "DELETE",
