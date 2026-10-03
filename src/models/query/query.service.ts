@@ -6,6 +6,7 @@ import { Query } from "src/entities/query.entity"
 import { DocumentService } from "../document/document.service";
 import { CreateQueryDto } from "./dto/create-query.dto";
 import { QueryDto } from "./dto/query.dto";
+import { UpdateQueryDto } from "./dto/update-query.dto";
 
 @Injectable()
 export class QueryService {
@@ -28,7 +29,8 @@ export class QueryService {
             question: dto.question,
             keywords,
             answer,
-            documents
+            documents,
+            name: dto.question
         })
 
         return plainToInstance(QueryDto, {
@@ -71,6 +73,23 @@ export class QueryService {
                 ? query.keywords.split(",").map(keyword => keyword.trim())
                 : []
         })
+    }
+
+    async updateQuery(
+        id: string,
+        dto: UpdateQueryDto
+    ): Promise<QueryDto | null> {
+        const existing = await this.queryRepository.findOne({
+            where: { id },
+        })
+
+        if (!existing) throw new NotFoundException()
+
+        existing.name = dto.name ?? existing.name
+        existing.updatedAt = new Date()
+        const query = await this.queryRepository.save(existing)
+
+        return plainToInstance(QueryDto, query)
     }
 
     async deleteQuery(id: string): Promise<QueryDto | null> {
