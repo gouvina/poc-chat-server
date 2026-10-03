@@ -29,7 +29,7 @@ export class MessageService {
 
         await this.conversationService.updateConversation(conversation.id, conversation)
 
-        return plainToInstance(MessageDto, message)
+        return plainToInstance(MessageDto, message, { excludeExtraneousValues: true })
     }
 
     async getMessages(conversationId: string): Promise<MessageDto[]> {
@@ -37,7 +37,7 @@ export class MessageService {
 
         if (!conversation) throw new NotFoundException()
 
-        return plainToInstance(MessageDto, conversation.messages)
+        return plainToInstance(MessageDto, conversation.messages, { excludeExtraneousValues: true })
     }
 
     async getMessage(id: string, conversationId: string): Promise<MessageDto | null> {
@@ -50,7 +50,7 @@ export class MessageService {
 
         if (!message) throw new NotFoundException()
 
-        return plainToInstance(MessageDto, message)
+        return plainToInstance(MessageDto, message, { excludeExtraneousValues: true })
     }
 
     async updateMessage(
@@ -74,7 +74,7 @@ export class MessageService {
         conversation.messages.splice(conversation.messages.indexOf(existing), 1, message)
         conversation.messages.push(message)
 
-        return plainToInstance(MessageDto, message)
+        return plainToInstance(MessageDto, message, { excludeExtraneousValues: true })
     }
 
     async deleteMessage(id: string, conversationId: string): Promise<MessageDto | null> {
@@ -90,6 +90,6 @@ export class MessageService {
 
         await this.messageRepository.remove(existing)
 
-        return plainToInstance(MessageDto, existing)
+        return plainToInstance(MessageDto, existing, { excludeExtraneousValues: true })
     }
 }
