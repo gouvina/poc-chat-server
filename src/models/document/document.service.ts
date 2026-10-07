@@ -6,6 +6,8 @@ import { DocumentDto } from "./dto/document.dto";
 import { CreateDocumentDto } from "./dto/create-document.dto"
 import { plainToInstance } from "class-transformer";
 
+export type ScoreFilter = { value: number, relation: "gt" | "lt" }
+
 @Injectable()
 export class DocumentService {
     constructor(
@@ -15,18 +17,40 @@ export class DocumentService {
     ) { }
 
     async getDocuments(
+        scoreFilters: ScoreFilter[],
         version?: string,
-        rollId?: number
+        rollId?: number,
+        textFilter?: string
     ): Promise<DocumentDto[]> {
-        const documents = await this.documentRepository.find({
-            where: {
-                ...(version !== undefined && { version }),
-                ...(rollId !== undefined && { roll: { id: rollId } }),
-            },
-            relations: {
-                roll: true
-            }
-        })
+        const query = this.documentRepository
+            .createQueryBuilder("document")
+            .leftJoinAndSelect("document.roll", "roll")
+
+        if (version !== undefined) {
+            query.andWhere("document.version = :version", { version })
+        }
+
+        if (rollId !== undefined) {
+            query.andWhere("roll.id = :rollId", { rollId })
+        }
+
+        if (textFilter != undefined) {
+            query.andWhere("document.text ILIKE :text", { text: `%${textFilter}%` })
+        }
+
+        if (scoreFilters.length > 0) {
+            scoreFilters.forEach((filter, index) => {
+                if (filter.relation === "gt") {
+                    query.andWhere(`document.score >= :score${index}`, { [`score${index}`]: filter.value })
+                }
+
+                if (filter.relation === "lt") {
+                    query.andWhere(`document.score <= :score${index}`, { [`score${index}`]: filter.value })
+                }
+            })
+        }
+
+        const documents = await query.getMany()
 
         return documents.map(document => plainToInstance(DocumentDto, document))
     }
