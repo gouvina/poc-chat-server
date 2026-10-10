@@ -27,10 +27,10 @@ export class QueryService {
         const query = await this.queryRepository.save({
             user: dto.user,
             question: dto.question,
+            name: dto.question,
             keywords,
             answer,
             documents,
-            name: dto.question
         })
 
         return plainToInstance(QueryDto, {
