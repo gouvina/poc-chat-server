@@ -6,6 +6,9 @@ import { BaseEntity } from "./base.entity"
 @Entity('queries')
 export class Query extends BaseEntity {
     @Column({ type: 'varchar' })
+    name!: string
+
+    @Column({ type: 'varchar' })
     question!: string
 
     @Column({ type: 'varchar' })
