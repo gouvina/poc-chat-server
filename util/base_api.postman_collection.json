@@ -6,14 +6,7 @@
 		"_exporter_id": "16523924"
 	},
 	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{ACCESS_TOKEN}}",
-				"type": "string"
-			}
-		]
+		"type": "noauth"
 	},
 	"item": [
 		{
@@ -46,22 +39,6 @@
 			"item": [
 				{
 					"name": "Register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test('Register successful', function () {",
-									"  pm.response.to.have.status(201);",
-									"});",
-									"const r = pm.response.json();",
-									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
-									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
-								]
-							}
-						}
-					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -97,22 +74,6 @@
 				},
 				{
 					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test('Login successful', function () {",
-									"  pm.response.to.have.status(201);",
-									"});",
-									"const r = pm.response.json();",
-									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);",
-									"pm.collectionVariables.set('REFRESH_TOKEN', r.refreshToken);"
-								]
-							}
-						}
-					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -166,18 +127,6 @@
 				},
 				{
 					"name": "Refresh Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"const r = pm.response.json();",
-									"pm.collectionVariables.set('ACCESS_TOKEN', r.accessToken);"
-								]
-							}
-						}
-					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -186,15 +135,6 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{BASE_URL}}/auth/refresh",
 							"host": [

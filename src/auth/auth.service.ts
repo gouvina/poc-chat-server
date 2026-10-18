@@ -13,7 +13,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(createUserDto: CreateUserDto): Promise<LoginResponseDto> {
     const user = await this.userService.createUser(createUserDto);
@@ -50,30 +50,26 @@ export class AuthService {
 
     return user;
   }
-  
+
   async refresh(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
-  
+
       const user = await this.userService.getUser(payload.sub);
-  
+
       if (!user) {
         throw new UnauthorizedException();
       }
-  
+
       const accessToken = await this.jwtService.signAsync(
         {
           sub: user.id,
           email: user.email
         },
-        {
-          secret: process.env.JWT_ACCESS_SECRET,
-          expiresIn: '15m',
-        },
       );
-  
+
       return {
         accessToken,
       };
@@ -90,23 +86,20 @@ export class AuthService {
       sub: user.id,
       email: user.email
     };
-  
+
     const refreshPayload = {
       sub: user.id,
     };
-  
+
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(accessPayload, {
-        secret: process.env.JWT_ACCESS_SECRET,
-        expiresIn: '15m',
-      }),
-  
+      this.jwtService.signAsync(accessPayload),
+
       this.jwtService.signAsync(refreshPayload, {
         secret: process.env.JWT_REFRESH_SECRET,
-        expiresIn: '7d',
+        expiresIn: Number(process.env.JWT_REFRESH_EXPIRES_IN),
       }),
     ]);
-  
+
     return {
       accessToken,
       refreshToken,

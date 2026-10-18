@@ -17,6 +17,8 @@ export class LoginDto {
 export class LoginResponseDto {
   accessToken!: string;
 
+  refreshToken!: string
+
   @ValidateNested()
   @Type(() => UserDto)
   user!: UserDto;

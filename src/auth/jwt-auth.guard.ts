@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticatedRequest } from './types/authenticated-request.type';
-import { JwtPayload } from './types/jwt-payload.type';
+import type { AuthenticatedRequest } from './types/authenticated-request.type';
+import type { JwtPayload } from './types/jwt-payload.type';
 import { Reflector } from '@nestjs/core';
 import { PUBLIC_ENDPOINT } from './auth.constants';
 
@@ -17,18 +17,18 @@ export class JwtAuthGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly reflector: Reflector,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_ENDPOINT, [
       context.getHandler(),
       context.getClass(),
     ]);
-    
+
     if (isPublic) return true
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    const token = this.extractTokenFromHeader(request);
+    const token = request.cookies?.['access_token']
 
     if (!token) {
       throw new UnauthorizedException('Missing access token');
@@ -44,12 +44,5 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     return true;
-  }
-
-  private extractTokenFromHeader(
-    request: AuthenticatedRequest,
-  ): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }
