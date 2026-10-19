@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query, } from "@nestjs/common";
-import { DocumentService, ScoreFilter } from "./document.service";
+import { DocumentService } from "./document.service";
 import { DocumentDto } from "./dto/document.dto";
 import { CreateDocumentDto } from "./dto/create-document.dto";
+import { FilterDocumentDto, ScoreFilter } from "./dto/filter-document.dto";
 
 @Controller('documents')
 export class DocumentController {
@@ -9,29 +10,25 @@ export class DocumentController {
 
     @Get()
     async getDocuments(
-        @Query('version') version?: string,
-        @Query('rollId') rollId?: number,
-        @Query('text') text?: string,
-        @Query('scoregt') scoregt?: number,
-        @Query('scorelt') scorelt?: number
+        @Query() filters: FilterDocumentDto,
     ): Promise<DocumentDto[]> {
         const scoreFilters: ScoreFilter[] = []
 
-        if (scoregt !== undefined) {
+        if (filters.scoregt !== undefined) {
             scoreFilters.push({
-                value: scoregt,
+                value: filters.scoregt,
                 relation: "gt",
             })
         }
 
-        if (scorelt !== undefined) {
+        if (filters.scorelt !== undefined) {
             scoreFilters.push({
-                value: scorelt,
+                value: filters.scorelt,
                 relation: "lt",
             })
         }
 
-        return this.documentService.getDocuments(scoreFilters, version, rollId, text)
+        return this.documentService.getDocuments(scoreFilters, filters.version, filters.rollId, filters.text)
     }
 
     @Get(':id')

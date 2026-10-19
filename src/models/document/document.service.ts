@@ -5,8 +5,7 @@ import { Document } from "src/entities/document.entity";
 import { DocumentDto } from "./dto/document.dto";
 import { CreateDocumentDto } from "./dto/create-document.dto"
 import { plainToInstance } from "class-transformer";
-
-export type ScoreFilter = { value: number, relation: "gt" | "lt" }
+import { ScoreFilter } from "./dto/filter-document.dto";
 
 @Injectable()
 export class DocumentService {
