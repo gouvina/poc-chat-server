@@ -12,23 +12,21 @@ export class DocumentController {
     async getDocuments(
         @Query() filters: FilterDocumentDto,
     ): Promise<DocumentDto[]> {
-        const scoreFilters: ScoreFilter[] = []
+        let scoreFilter: ScoreFilter | undefined
 
         if (filters.scoregt !== undefined) {
-            scoreFilters.push({
+            scoreFilter = {
                 value: filters.scoregt,
                 relation: "gt",
-            })
-        }
-
-        if (filters.scorelt !== undefined) {
-            scoreFilters.push({
+            }
+        } else if (filters.scorelt !== undefined) {
+            scoreFilter = {
                 value: filters.scorelt,
                 relation: "lt",
-            })
+            }
         }
 
-        return this.documentService.getDocuments(scoreFilters, filters.version, filters.rollId, filters.text)
+        return this.documentService.getDocuments(scoreFilter, filters.version, filters.rollId, filters.text)
     }
 
     @Get(':id')
