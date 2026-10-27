@@ -5,8 +5,7 @@ import { Document } from "src/entities/document.entity";
 import { DocumentDto } from "./dto/document.dto";
 import { CreateDocumentDto } from "./dto/create-document.dto"
 import { plainToInstance } from "class-transformer";
-
-export type ScoreFilter = { value: number, relation: "gt" | "lt" }
+import { ScoreFilter } from "./dto/filter-document.dto";
 
 @Injectable()
 export class DocumentService {
@@ -17,7 +16,7 @@ export class DocumentService {
     ) { }
 
     async getDocuments(
-        scoreFilters: ScoreFilter[],
+        scoreFilter?: ScoreFilter,
         version?: string,
         rollId?: number,
         textFilter?: string
@@ -38,16 +37,10 @@ export class DocumentService {
             query.andWhere("document.text ILIKE :text", { text: `%${textFilter}%` })
         }
 
-        if (scoreFilters.length > 0) {
-            scoreFilters.forEach((filter, index) => {
-                if (filter.relation === "gt") {
-                    query.andWhere(`document.score >= :score${index}`, { [`score${index}`]: filter.value })
-                }
+        if (scoreFilter !== undefined) {
+            const comparison = scoreFilter.relation === "gt" ? ">=" : "<="
+            query.andWhere(`document.score ${comparison} :score`, { score: scoreFilter.value })
 
-                if (filter.relation === "lt") {
-                    query.andWhere(`document.score <= :score${index}`, { [`score${index}`]: filter.value })
-                }
-            })
         }
 
         const documents = await query.getMany()
