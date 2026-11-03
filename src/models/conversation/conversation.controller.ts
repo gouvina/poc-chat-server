@@ -7,16 +7,17 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Query
+  Req
 } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationDto } from './dto/conversation.dto';
+import { AuthenticatedRequest } from 'src/auth/types/authenticated-request.type';
 
 @Controller('conversations')
 export class ConversationController {
-  constructor(private readonly conversationService: ConversationService) {}
+  constructor(private readonly conversationService: ConversationService) { }
 
   @Post()
   async createConversation(@Body() dto: CreateConversationDto): Promise<ConversationDto> {
@@ -24,13 +25,16 @@ export class ConversationController {
   }
 
   @Get()
-  async getConversations(@Query('userId', ParseUUIDPipe) userId: string): Promise<ConversationDto[]> {
-    return this.conversationService.getConversations(userId);
+  async getConversations(@Req() req: AuthenticatedRequest): Promise<ConversationDto[]> {
+    return this.conversationService.getConversations(req.user.sub);
   }
 
   @Get(':id')
-  async getConversation(@Param('id', ParseUUIDPipe) id: string): Promise<ConversationDto | null> {
-    return this.conversationService.getConversation(id);
+  async getConversation(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Req() req: AuthenticatedRequest
+  ): Promise<ConversationDto | null> {
+    return this.conversationService.getConversation(id, req.user.sub);
   }
 
   @Patch(':id')
@@ -46,6 +50,6 @@ export class ConversationController {
 
   @Delete(':id')
   async deleteConversation(@Param('id', ParseUUIDPipe) id: string): Promise<ConversationDto | null> {
-   return this.conversationService.deleteConversation(id);
+    return this.conversationService.deleteConversation(id);
   }
 }

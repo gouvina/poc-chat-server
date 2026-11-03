@@ -15,9 +15,7 @@ import { UserModule } from 'src/models/user/user.module';
       useFactory: (config: ConfigService): JwtModuleOptions => ({
         secret: config.getOrThrow<string>('JWT_ACCESS_SECRET'),
         signOptions: {
-          expiresIn: config.get('JWT_EXPIRES_IN', '1d') as NonNullable<
-            JwtModuleOptions['signOptions']
-          >['expiresIn'],
+          expiresIn: Number(config.get('JWT_ACCESS_EXPIRES_IN'))
         },
       }),
     }),
@@ -26,4 +24,4 @@ import { UserModule } from 'src/models/user/user.module';
   providers: [AuthService, JwtAuthGuard],
   exports: [AuthService, JwtAuthGuard, JwtModule],
 })
-export class AuthModule {}
+export class AuthModule { }

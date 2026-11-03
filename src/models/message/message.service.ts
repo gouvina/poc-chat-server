@@ -16,8 +16,8 @@ export class MessageService {
         private readonly conversationService: ConversationService,
     ) { }
 
-    async createMessage(conversationId: string, dto: CreateMessageDto): Promise<MessageDto> {
-        const conversation = await this.conversationService.getConversation(conversationId)
+    async createMessage(conversationId: string, userId: string, dto: CreateMessageDto): Promise<MessageDto> {
+        const conversation = await this.conversationService.getConversation(conversationId, userId)
 
         if (!conversation) throw new NotFoundException()
 
@@ -32,16 +32,16 @@ export class MessageService {
         return plainToInstance(MessageDto, message, { excludeExtraneousValues: true })
     }
 
-    async getMessages(conversationId: string): Promise<MessageDto[]> {
-        const conversation = await this.conversationService.getConversation(conversationId)
+    async getMessages(conversationId: string, userId: string): Promise<MessageDto[]> {
+        const conversation = await this.conversationService.getConversation(conversationId, userId)
 
         if (!conversation) throw new NotFoundException()
 
         return plainToInstance(MessageDto, conversation.messages, { excludeExtraneousValues: true })
     }
 
-    async getMessage(id: string, conversationId: string): Promise<MessageDto | null> {
-        const conversation = await this.conversationService.getConversation(conversationId)
+    async getMessage(id: string, conversationId: string, userId: string): Promise<MessageDto | null> {
+        const conversation = await this.conversationService.getConversation(conversationId, userId)
 
         if (!conversation) throw new NotFoundException()
 
@@ -56,10 +56,11 @@ export class MessageService {
     async updateMessage(
         id: string,
         conversationId: string,
+        userId: string,
         dto: UpdateMessageDto,
     ): Promise<MessageDto | null> {
 
-        const conversation = await this.conversationService.getConversation(conversationId)
+        const conversation = await this.conversationService.getConversation(conversationId, userId)
 
         if (!conversation) throw new NotFoundException()
 
@@ -77,8 +78,8 @@ export class MessageService {
         return plainToInstance(MessageDto, message, { excludeExtraneousValues: true })
     }
 
-    async deleteMessage(id: string, conversationId: string): Promise<MessageDto | null> {
-        const conversation = await this.conversationService.getConversation(conversationId)
+    async deleteMessage(id: string, conversationId: string, userId: string): Promise<MessageDto | null> {
+        const conversation = await this.conversationService.getConversation(conversationId, userId)
 
         if (!conversation) throw new NotFoundException()
 

@@ -1,8 +1,6 @@
+import type { Request } from 'express'
 import { JwtPayload } from './jwt-payload.type';
 
-export interface AuthenticatedRequest {
-  headers: {
-    authorization?: string;
-  };
+export interface AuthenticatedRequest extends Request {
   user: JwtPayload;
 }

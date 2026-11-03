@@ -55,9 +55,12 @@ export class QueryService {
         }))
     }
 
-    async getQuery(id: string): Promise<QueryDto | null> {
+    async getQuery(id: string, userId: string): Promise<QueryDto | null> {
         const query = await this.queryRepository.findOne({
-            where: { id },
+            where: {
+                id,
+                user: { id: userId }
+            },
             relations: {
                 documents: {
                     roll: true

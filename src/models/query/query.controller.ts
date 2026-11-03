@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query } from "@nestjs/common"
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, Req } from "@nestjs/common"
 import { CreateQueryDto } from "./dto/create-query.dto"
 import { QueryDto } from "./dto/query.dto"
 import { QueryService } from "./query.service"
 import { UpdateQueryDto } from "./dto/update-query.dto"
+import { AuthenticatedRequest } from "src/auth/types/authenticated-request.type"
 
 @Controller('queries')
 export class QueryController {
@@ -14,13 +15,16 @@ export class QueryController {
     }
 
     @Get()
-    async getQueries(@Query('userId', ParseUUIDPipe) userId: string): Promise<QueryDto[]> {
-        return this.queryService.getQueries(userId)
+    async getQueries(@Req() req: AuthenticatedRequest): Promise<QueryDto[]> {
+        return this.queryService.getQueries(req.user.sub)
     }
 
     @Get(':id')
-    async getQuery(@Param('id', ParseUUIDPipe) id: string): Promise<QueryDto | null> {
-        return this.queryService.getQuery(id)
+    async getQuery(
+        @Param('id', ParseUUIDPipe) id: string,
+        @Req() req: AuthenticatedRequest
+    ): Promise<QueryDto | null> {
+        return this.queryService.getQuery(id, req.user.sub)
     }
 
     @Patch(':id')

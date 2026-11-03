@@ -38,9 +38,12 @@ export class ConversationService {
     return plainToInstance(ConversationDto, conversations)
   }
 
-  async getConversation(id: string): Promise<ConversationDto | null> {
+  async getConversation(id: string, userId: string): Promise<ConversationDto | null> {
     const conversation = await this.conversationRepository.findOne({
-      where: { id },
+      where: {
+        id,
+        user: { id: userId }
+      },
       relations: {
         messages: true
       }
